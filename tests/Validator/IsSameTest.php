@@ -7,10 +7,11 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsSame;
 
-class IsSameTest extends TestCase
+class IsSameTest extends ValidatorTestCaseAbstract
 {
     public function testIsSame()
     {
@@ -26,5 +27,24 @@ class IsSameTest extends TestCase
         $this->assertFalse((new IsSame(123, true))->validate('123')->isValid());
         $this->assertFalse((new IsSame(31, true))->validate(null)->isValid());
         $this->assertFalse((new IsSame(false, true))->validate(null)->isValid());
+    }
+
+    /**
+     * Test the is required is behaving correctly.
+     */
+    public function testIsRequired()
+    {
+        $this->assertTrue(Validate::isSame('cheese')->validate('cheese')->isValid());
+        $this->assertTrue(Validate::isSame('cheese')->validate(new ValueWasNotSet())->isValid());
+        $this->assertFalse(Validate::isSame('cheese')->isRequired()->validate('')->isValid());
+    }
+
+    /**
+     * Test serialisation
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{"match":"cheese","strict":false}', json_encode(new IsSame('cheese')));
+        $this->assertEquals('{"match":123,"strict":true}', json_encode(new IsSame(123, true)));
     }
 }

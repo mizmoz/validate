@@ -29,6 +29,11 @@ class IsBoolean implements Validator, GetAllowedPropertyValues
         return $this->allowed;
     }
 
+    /**
+     * Map values to true or false
+     *
+     * @return array
+     */
     public function getMappedPropertyValues() : array
     {
         return [

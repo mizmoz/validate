@@ -5,13 +5,13 @@
  * @see https://www.mizmoz.com/labs/validate
  */
 
-namespace Mizmoz\Validate\Validator;
+namespace Mizmoz\Validate\Validator\Text;
 
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
 
-class StringLength implements Validator
+class IsLength implements Validator, Validator\Description
 {
     /**
      * @var integer
@@ -65,5 +65,24 @@ class StringLength implements Validator
             'stringLength',
             (! $isValid ? 'Value is not the correct length' : '')
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'min' => $this->min,
+            'max' => $this->max,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

@@ -12,9 +12,10 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsOneOf implements Validator, GetAllowedPropertyValues
+class IsOneOf implements Validator, GetAllowedPropertyValues, Validator\Description
 {
     /**
      * @var array
@@ -67,5 +68,34 @@ class IsOneOf implements Validator, GetAllowedPropertyValues
             'isOneOf',
             (! $isValid ? 'Value is not valid' : '')
         ))->setAllowedValues($this->getAllowedPropertyValues());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        $allowed = [];
+        foreach ($this->allowed as $shape) {
+            if (is_scalar($shape)) {
+                $allowed[] = $shape;
+            } else {
+                $description = Description::getDescription($shape);
+                $key = key($description);
+                $allowed[$key] = current($description);
+            }
+        }
+
+        return [
+            'allowed' => $allowed,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

@@ -13,7 +13,7 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsInteger implements Validator, GetAllowedEmptyTypes
+class IsInteger implements Validator, GetAllowedEmptyTypes, Validator\Description
 {
     /**
      * @var bool
@@ -61,5 +61,23 @@ class IsInteger implements Validator, GetAllowedEmptyTypes
             'isInteger',
             (! $isValid ? 'Value is not a valid int' : '')
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'strict' => $this->strict,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

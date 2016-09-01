@@ -14,7 +14,6 @@ use Mizmoz\Validate\Exception\NonExistentHelperException;
 use Mizmoz\Validate\Exception\NonUniqueHelperNameException;
 use Mizmoz\Validate\Exception\InvalidHelperTypeException;
 use Mizmoz\Validate\Validator\IsRequired;
-use Mizmoz\Validate\Validator\StringLength;
 
 class ValidatorFactory
 {
@@ -22,6 +21,11 @@ class ValidatorFactory
      * Validator namespace
      */
     const VALIDATOR_NAMESPACE = __NAMESPACE__ . '\\Validator\\';
+
+    /**
+     * Text validation
+     */
+    const VALIDATOR_TEXT_NAMESPACE = __NAMESPACE__ . '\\Validator\\Text\\';
 
     /**
      * Resolver namespace
@@ -49,6 +53,9 @@ class ValidatorFactory
         'isSame' => self::VALIDATOR_NAMESPACE . 'IsSame',
         'isShape' => self::VALIDATOR_NAMESPACE . 'IsShape',
         'isString' => self::VALIDATOR_NAMESPACE . 'IsString',
+
+        // special validators
+        'textIsLength' => self::VALIDATOR_TEXT_NAMESPACE . 'IsLength',
 
         // resolvers
         'toClass' => self::RESOLVER_NAMESPACE . 'ToClass',
@@ -207,19 +214,6 @@ class ValidatorFactory
 
         // add the isRequired validator to the chain
         return new IsRequired($allowedEmptyTypes);
-    }
-
-    /**
-     * Validate the string length of the item
-     *
-     * @param int $min
-     * @param int $max
-     * @param null|string $encoding
-     * @return StringLength
-     */
-    public static function stringLength(int $min = 0, int $max = 0, $encoding = null) : StringLength
-    {
-        return new StringLength($min, $max, $encoding);
     }
 
     /**

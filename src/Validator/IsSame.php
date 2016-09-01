@@ -10,8 +10,9 @@ namespace Mizmoz\Validate\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsSame implements Validator
+class IsSame implements Validator, Validator\Description
 {
     /**
      * @var mixed
@@ -39,7 +40,11 @@ class IsSame implements Validator
      */
     public function validate($value) : ResultContract
     {
-        $isValid = ($this->strict ? $value === $this->match : $value == $this->match);
+        if ($value instanceof ValueWasNotSet) {
+            $isValid = true;
+        } else {
+            $isValid = ($this->strict ? $value === $this->match : $value == $this->match);
+        }
 
         return new Result(
             $isValid,
@@ -47,5 +52,24 @@ class IsSame implements Validator
             'isSame',
             (! $isValid ? 'Values are not the same' : '')
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'match' => $this->match,
+            'strict' => $this->strict,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

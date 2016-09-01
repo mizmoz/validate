@@ -12,9 +12,10 @@
 namespace Mizmoz\Validate\Resolver;
 
 use Mizmoz\Validate\Contract\Resolver;
+use Mizmoz\Validate\Contract\Resolver\Description;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class ToDefaultValue implements Resolver
+class ToDefaultValue implements Resolver, Description
 {
     /**
      * @var mixed
@@ -55,5 +56,21 @@ class ToDefaultValue implements Resolver
         }
 
         return $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

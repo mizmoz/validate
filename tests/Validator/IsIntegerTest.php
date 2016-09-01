@@ -7,10 +7,11 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsInteger;
 
-class IsIntegerTest extends TestCase
+class IsIntegerTest extends ValidatorTestCaseAbstract
 {
     public function testIsInteger()
     {
@@ -43,5 +44,24 @@ class IsIntegerTest extends TestCase
 
         // strict validation
         $this->assertEquals([0], (new IsInteger(true))->getAllowedEmptyTypes());
+    }
+
+    /**
+     * Test the is required is behaving correctly.
+     */
+    public function testIsRequired()
+    {
+        $this->assertTrue(Validate::isInteger()->validate(1)->isValid());
+        $this->assertTrue(Validate::isInteger()->validate(new ValueWasNotSet())->isValid());
+        $this->assertFalse(Validate::isInteger()->isRequired()->validate('')->isValid());
+    }
+
+    /**
+     * Test serialisation
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{"strict":false}', json_encode(new IsInteger()));
+        $this->assertEquals('{"strict":true}', json_encode(new IsInteger(true)));
     }
 }

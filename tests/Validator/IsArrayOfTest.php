@@ -7,12 +7,14 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsArrayOf;
+use Mizmoz\Validate\Validator\IsInteger;
 use Mizmoz\Validate\Validator\IsNumeric;
 use Mizmoz\Validate\Validator\IsString;
 
-class IsArrayOfTest extends TestCase
+class IsArrayOfTest extends ValidatorTestCaseAbstract
 {
     public function testIsArrayOf()
     {
@@ -51,5 +53,33 @@ class IsArrayOfTest extends TestCase
         ])->isValid());
 
         $this->assertFalse($validate->validate(null)->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testIsRequired()
+    {
+        $validate = Validate::isArrayOf(Validate::isString());
+
+        $this->assertTrue($validate->validate([
+            'name' => 'Ian'
+        ])->isValid());
+
+        $this->assertTrue($validate->validate(new ValueWasNotSet())->isValid());
+
+        // now set to required
+        $validate->isRequired();
+
+        $this->assertFalse($validate->validate(null)->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{"isString":{"strict":false}}', json_encode(new IsArrayOf(new IsString())));
+        $this->assertEquals('{"isInteger":{"strict":false}}', json_encode(new IsArrayOf(new IsInteger())));
     }
 }

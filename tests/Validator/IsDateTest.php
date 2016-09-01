@@ -7,12 +7,12 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\Date;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsDate;
 
-class IsDateTest extends TestCase
+class IsDateTest extends ValidatorTestCaseAbstract
 {
     public function testIsDate()
     {
@@ -59,5 +59,24 @@ class IsDateTest extends TestCase
         // dont resolve when the value is invalid
         $dateTime = (new IsDate())->validate('rar')->getValue();
         $this->assertEquals('rar', $dateTime);
+    }
+
+    /**
+     * Test the is required is behaving correctly.
+     */
+    public function testIsRequired()
+    {
+        $this->assertTrue(Validate::isDate()->validate('2016-01-01')->isValid());
+        $this->assertTrue(Validate::isDate()->validate(new ValueWasNotSet())->isValid());
+        $this->assertFalse(Validate::isDate()->isRequired()->validate('')->isValid());
+    }
+
+    /**
+     * Test serialisation
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{"format":"Y-m-d"}', json_encode(new IsDate()));
+        $this->assertEquals('{"format":"n\/j\/y"}', json_encode(new IsDate('n/j/y')));
     }
 }

@@ -7,12 +7,11 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsString;
 
-class IsStringTest extends TestCase
+class IsStringTest extends ValidatorTestCaseAbstract
 {
     public function testIsString()
     {
@@ -56,6 +55,17 @@ class IsStringTest extends TestCase
      */
     public function testIsRequired()
     {
+        $this->assertTrue(Validate::isString()->validate('cheese')->isValid());
+        $this->assertTrue(Validate::isString()->validate(new ValueWasNotSet())->isValid());
         $this->assertFalse(Validate::isString()->isRequired()->validate('')->isValid());
+    }
+
+    /**
+     * Test serialisation
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{"strict":false}', json_encode(new IsString()));
+        $this->assertEquals('{"strict":true}', json_encode(new IsString(true)));
     }
 }

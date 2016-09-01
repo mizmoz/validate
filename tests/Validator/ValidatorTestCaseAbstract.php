@@ -9,14 +9,20 @@
  * @copyright Copyright (c) Mizmoz Limited 2016. All rights reserved.
  */
 
-namespace Mizmoz\Validate\Contract\Validator;
+namespace Mizmoz\Validate\Tests\Validator;
 
-interface Description extends \JsonSerializable
+use Mizmoz\Validate\Tests\TestCase;
+
+abstract class ValidatorTestCaseAbstract extends TestCase
 {
     /**
-     * Get a description of the validator
-     *
-     * @return mixed
+     * Test the required states work
      */
-    public function getDescription();
+    abstract public function testIsRequired();
+
+    /**
+     * Check the model serialises
+     *
+     */
+    abstract public function testJsonSerialize();
 }

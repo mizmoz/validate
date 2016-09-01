@@ -77,8 +77,16 @@ class IsShape implements Validator, Validator\Description
     /**
      * @inheritdoc
      */
-    public function getDescription() : array
+    public function getDescription()
     {
         return Description::getDescriptionForShapes($this->shape);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

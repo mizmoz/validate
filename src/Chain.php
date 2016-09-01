@@ -109,10 +109,10 @@ class Chain implements Validator\Description, Validator
      * @param null|string $encoding
      * @return Chain
      */
-    public function stringLength(int $min = 0, int $max = 0, $encoding = null) : Chain
+    public function textIsLength(int $min = 0, int $max = 0, $encoding = null) : Chain
     {
         $encoding = ($encoding ? $encoding : $this->characterEncoding);
-        $this->chain[] = ValidatorFactory::stringLength($min, $max, $encoding);
+        $this->chain[] = ValidatorFactory::textIsLength($min, $max, $encoding);
         return $this;
     }
 
@@ -214,8 +214,16 @@ class Chain implements Validator\Description, Validator
     /**
      * @return array
      */
-    public function getDescription() : array
+    public function getDescription()
     {
         return Description::getDescription($this->chain);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

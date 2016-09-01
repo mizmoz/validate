@@ -61,6 +61,10 @@ class Date extends DateTime
      */
     public static function create($format, $time, DateTimeZone $timezone = null)
     {
+        if (! $timezone) {
+            $timezone = new DateTimeZone('UTC');
+        }
+
         $dateTime = parent::createFromFormat($format, $time, $timezone);
 
         if (! $dateTime) {

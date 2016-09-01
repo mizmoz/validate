@@ -10,6 +10,7 @@ namespace Mizmoz\Validate\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class IsArray implements Validator
 {
@@ -33,7 +34,7 @@ class IsArray implements Validator
      */
     public function validate($value) : ResultContract
     {
-        $isValid = is_array($value);
+        $isValid = ($value instanceof ValueWasNotSet || is_array($value));
 
         if (! $isValid
             && ! $this->strict

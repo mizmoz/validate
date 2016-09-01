@@ -12,7 +12,7 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsRequired implements Validator
+class IsRequired implements Validator, Validator\Description
 {
     /**
      * @var array
@@ -43,5 +43,21 @@ class IsRequired implements Validator
             'isRequired',
             (! $isValid ? 'Value is required' : '')
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

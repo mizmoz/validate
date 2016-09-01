@@ -12,7 +12,7 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsString implements Validator
+class IsString implements Validator, Validator\Description
 {
     /**
      * @var bool
@@ -50,5 +50,23 @@ class IsString implements Validator
             'isString',
             (! $isValid ? 'Value is not a valid string' : '')
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'strict' => $this->strict,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

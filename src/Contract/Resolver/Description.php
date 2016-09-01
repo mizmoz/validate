@@ -9,12 +9,12 @@
  * @copyright Copyright (c) Mizmoz Limited 2016. All rights reserved.
  */
 
-namespace Mizmoz\Validate\Contract\Validator;
+namespace Mizmoz\Validate\Contract\Resolver;
 
 interface Description extends \JsonSerializable
 {
     /**
-     * Get a description of the validator
+     * Get a description of the resolver
      *
      * @return mixed
      */

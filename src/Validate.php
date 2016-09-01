@@ -27,9 +27,10 @@ use Mizmoz\Validate\Validator\IsShape;
  * @method static Chain isNumeric()
  * @method static Chain isObject()
  * @method static Chain isOneOf(array $allowed)
- * @method static Chain IsOneOfType(array $allowed)
+ * @method static Chain isOneOfType(array $allowed)
  * @method static Chain isRequired(Validator $validator, $allowedEmptyTypes = null)
  * @method static Chain isSame($match, bool $strict = false)
+ * @method static Chain isShape(array $allowed)
  * @method static Chain isString(bool $strict = false)
  */
 class Validate

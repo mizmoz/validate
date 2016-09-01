@@ -13,7 +13,7 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsDate implements Validator
+class IsDate implements Validator, Validator\Description
 {
     /**
      * @var string
@@ -61,5 +61,24 @@ class IsDate implements Validator
             'isDate',
             (! $isValid ? 'Date must be in the format: ' . $this->format : '')
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        // @todo Add PHP => moment.js date format conversion, probably in a resolver
+        return [
+            'format' => $this->format,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

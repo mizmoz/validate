@@ -12,7 +12,7 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsFilter implements Validator
+class IsFilter implements Validator, Validator\Description
 {
     /**
      * @var array
@@ -44,7 +44,7 @@ class IsFilter implements Validator
     {
         // parse the tags
         foreach ($tags as $key => $value) {
-            $keys = explode('|', $key);
+            $keys = explode('|', (is_int($key) ? $value : $key));
 
             foreach ($keys as $k) {
                 $v = $value;
@@ -111,5 +111,23 @@ class IsFilter implements Validator
             $value,
             'isFilter'
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'allowed' => $this->allowed,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

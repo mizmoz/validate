@@ -7,11 +7,12 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
+use Mizmoz\Validate\Validator\IsInteger;
 use Mizmoz\Validate\Validator\IsOneOf;
 
-class IsOneOfTest extends TestCase
+class IsOneOfTest extends ValidatorTestCaseAbstract
 {
     public function testIsOneOf()
     {
@@ -46,5 +47,55 @@ class IsOneOfTest extends TestCase
         $this->assertTrue($result->isValid());
 
         $this->assertEquals(['yes', 'no'], $result->getValue());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testIsRequired()
+    {
+        $validate = Validate::isOneOf(['on', 'off']);
+
+        $this->assertTrue($validate->validate('on')->isValid());
+        $this->assertTrue($validate->validate(new ValueWasNotSet())->isValid());
+
+        // now set to required
+        $validate->isRequired();
+        $this->assertFalse($validate->validate('')->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{"allowed":["active","inactive"]}', json_encode(new IsOneOf(['active', 'inactive'])));
+
+
+        // test description
+        $this->assertEquals([
+            'allowed' => [
+                'isInteger' => [
+                    'strict' => false,
+                ],
+                'isOneOf' => [
+                    'allowed' => [
+                        'on', 'off'
+                    ]
+                ]
+            ]
+        ], (new IsOneOf([
+            new IsInteger(),
+            new IsOneOf(['on', 'off']),
+        ]))->getDescription());
+
+        // nested one of... not totally sure this is how we should represent this kind of validation
+        $this->assertEquals(
+            '{"allowed":{"isInteger":{"strict":false},"isOneOf":{"allowed":["on","off"]}}}',
+            json_encode(new IsOneOf([
+                new IsInteger(),
+                new IsOneOf(['on', 'off']),
+            ]))
+        );
     }
 }

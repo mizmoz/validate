@@ -70,4 +70,48 @@ class IsShapeTest extends TestCase
             ]
         ])->getValue());
     }
+
+    public function testShapeDescription()
+    {
+        $validator = Validate::set([
+            'likes' => Validate::isShape([
+                'music' => Validate::isShape([
+                    'bands' => Validate::isString(),
+                ]),
+            ])->isRequired(),
+            'status' => Validate::isOneOf(['active', 'inactive'])
+                ->setDefault('active')
+        ]);
+
+        $this->assertEquals([
+            'likes' => [
+                'description' => '',
+                'isRequired' => true,
+                'isShape' => [
+                    'music' => [
+                        'description' => '',
+                        'isShape' => [
+                            'bands' => [
+                                'description' => '',
+                                'isString' => [
+                                    'strict' => false,
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'status' => [
+                'description' => '',
+                'isOneOf' => [
+                    'allowed' => [
+                        'active',
+                        'inactive'
+                    ]
+                ],
+                'toDefaultValue' => 'active'
+            ]
+
+        ], $validator->getDescription());
+    }
 }
