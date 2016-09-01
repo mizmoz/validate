@@ -13,18 +13,7 @@ use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Exception\NonExistentHelperException;
 use Mizmoz\Validate\Exception\NonUniqueHelperNameException;
 use Mizmoz\Validate\Exception\InvalidHelperTypeException;
-use Mizmoz\Validate\Validator\IsArray;
-use Mizmoz\Validate\Validator\IsArrayOf;
-use Mizmoz\Validate\Validator\IsArrayOfShape;
-use Mizmoz\Validate\Validator\IsBoolean;
-use Mizmoz\Validate\Validator\IsInteger;
-use Mizmoz\Validate\Validator\IsNumeric;
-use Mizmoz\Validate\Validator\IsObject;
-use Mizmoz\Validate\Validator\IsOneOf;
-use Mizmoz\Validate\Validator\IsOneOfType;
 use Mizmoz\Validate\Validator\IsRequired;
-use Mizmoz\Validate\Validator\IsSame;
-use Mizmoz\Validate\Validator\IsString;
 use Mizmoz\Validate\Validator\StringLength;
 
 class ValidatorFactory
@@ -45,9 +34,20 @@ class ValidatorFactory
      * @var array
      */
     private static $helper = [
+        'isArray' => self::VALIDATOR_NAMESPACE . 'IsArray',
+        'isArrayOf' => self::VALIDATOR_NAMESPACE . 'IsArrayOf',
+        'isArrayOfShape' => self::VALIDATOR_NAMESPACE . 'IsArrayOfShape',
         'isBoolean' => self::VALIDATOR_NAMESPACE . 'IsBoolean',
+        'isDate' => self::VALIDATOR_NAMESPACE . 'IsDate',
         'isEmail' => self::VALIDATOR_NAMESPACE . 'IsEmail',
         'isFilter' => self::VALIDATOR_NAMESPACE . 'IsFilter',
+        'isInteger' => self::VALIDATOR_NAMESPACE . 'IsInteger',
+        'isNumeric' => self::VALIDATOR_NAMESPACE . 'IsNumeric',
+        'isObject' => self::VALIDATOR_NAMESPACE . 'IsObject',
+        'isOneOf' => self::VALIDATOR_NAMESPACE . 'IsOneOf',
+        'isOneOfType' => self::VALIDATOR_NAMESPACE . 'IsOneOfType',
+        'isSame' => self::VALIDATOR_NAMESPACE . 'IsSame',
+        'isString' => self::VALIDATOR_NAMESPACE . 'IsString',
 
         // resolvers
         'toClass' => self::RESOLVER_NAMESPACE . 'ToClass',
@@ -183,102 +183,6 @@ class ValidatorFactory
     }
 
     /**
-     * Return a new IsArray validator
-     *
-     * @param bool $strict
-     * @return IsArray
-     */
-    public static function isArray(bool $strict = false) : IsArray
-    {
-        return new IsArray($strict);
-    }
-
-    /**
-     * Return a new IsArrayOf validator
-     *
-     * @param mixed $allowed
-     * @return IsArrayOf
-     */
-    public static function isArrayOf($allowed) : IsArrayOf
-    {
-        return new IsArrayOf($allowed);
-    }
-
-    /**
-     * Return a new IsArrayOfShape validator
-     *
-     * @param array $shape
-     * @return IsArrayOfShape
-     */
-    public static function isArrayOfShape(array $shape) : IsArrayOfShape
-    {
-        return new IsArrayOfShape($shape);
-    }
-
-    /**
-     * Return an IsBoolean validator chain
-     *
-     * @return IsBoolean
-     */
-    public static function isBoolean() : IsBoolean
-    {
-        return static::resolveHelper('isBoolean');
-    }
-
-    /**
-     * Return a new IsInteger validator
-     *
-     * @param bool $strict
-     * @return IsInteger
-     */
-    public static function isInteger(bool $strict = false) : IsInteger
-    {
-        return new IsInteger($strict);
-    }
-
-    /**
-     * Is a number of some kind. This can be an int, float or string that looks like a number
-     *
-     * @return IsNumeric
-     */
-    public static function isNumeric() : IsNumeric
-    {
-        return new IsNumeric();
-    }
-
-    /**
-     * Return a new IsObject validator
-     *
-     * @return IsObject
-     */
-    public static function isObject() : IsObject
-    {
-        return new IsObject();
-    }
-
-    /**
-     * Return a new IsOneOf validator
-     *
-     * @param array $allowed
-     * @return IsOneOf
-     */
-    public static function isOneOf(array $allowed) : IsOneOf
-    {
-        return new IsOneOf($allowed);
-    }
-
-    /**
-     * Return a new IsOneOfType validator
-     *
-     * @param array $allowed
-     * @return IsOneOfType
-     */
-    public static function isOneOfType(array $allowed) : IsOneOfType
-    {
-        return new IsOneOfType($allowed);
-    }
-
-    /**
      * Set the required flag
      *
      * @param Validator $validator
@@ -302,29 +206,6 @@ class ValidatorFactory
 
         // add the isRequired validator to the chain
         return new IsRequired($allowedEmptyTypes);
-    }
-
-    /**
-     * Return IsSame validator
-     *
-     * @param $match
-     * @param bool $strict
-     * @return IsSame
-     */
-    public static function isSame($match, bool $strict = false) : IsSame
-    {
-        return new IsSame($match, $strict);
-    }
-
-    /**
-     * Return IsString validator
-     *
-     * @param bool $strict
-     * @return IsString
-     */
-    public static function isString(bool $strict = false) : IsString
-    {
-        return new IsString($strict);
     }
 
     /**

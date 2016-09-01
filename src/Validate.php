@@ -20,6 +20,7 @@ use Mizmoz\Validate\Validator\IsSame;
  * @method static Chain isArrayOf($allowed)
  * @method static Chain isArrayOfShape(array $shape)
  * @method static Chain isBoolean()
+ * @method static Chain isDate(string $format = 'Y-m-d', bool $setValueToDateTime = true)
  * @method static Chain isEmail(bool $strict = false)
  * @method static Chain isFilter(array $tags = [])
  * @method static Chain isInteger(bool $strict = false)
