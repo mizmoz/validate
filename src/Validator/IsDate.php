@@ -7,8 +7,7 @@
 
 namespace Mizmoz\Validate\Validator;
 
-use \DateTime;
-use \DateTimeZone;
+use Mizmoz\Validate\Validator\Helper\Date;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
@@ -30,7 +29,7 @@ class IsDate implements Validator
      * IsDate constructor.
      *
      * @param string $format
-     * @param bool $setValueToDateTime Should the value before set to the resolved DateTime object or left alone?
+     * @param bool $setValueToDateTime Should the value before set to the resolved Date object or left alone?
      */
     public function __construct(string $format = 'Y-m-d', bool $setValueToDateTime = true)
     {
@@ -47,13 +46,13 @@ class IsDate implements Validator
 
         if (! $isValid) {
             // resolve the date
-            $dateTime = DateTime::createFromFormat($this->format, $value, new DateTimeZone('UTC'));
+            $date = Date::createFromFormat($this->format, $value);
 
             // are the items the same?
-            $isValid = ($dateTime && $dateTime->format($this->format) === $value);
+            $isValid = ($date && $date->format($this->format) === $value);
 
             // update the value if the result is valid and setValue... is true
-            $value = ($isValid && $this->setValueToDateTime ? $dateTime : $value);
+            $value = ($isValid && $this->setValueToDateTime ? $date : $value);
         }
 
         return new Result(

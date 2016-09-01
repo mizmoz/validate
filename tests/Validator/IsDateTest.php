@@ -8,6 +8,7 @@
 namespace Mizmoz\Validate\Tests\Validator;
 
 use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validator\Helper\Date;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsDate;
 
@@ -41,13 +42,13 @@ class IsDateTest extends TestCase
 
     public function testDateResolutionToDateTime()
     {
-        // check we resolve to a DateTime object
+        // check we resolve to a Date object
         $dateTime = (new IsDate())->validate('2012-01-01')->getValue();
-        $this->assertInstanceOf(\DateTime::class, $dateTime);
+        $this->assertInstanceOf(Date::class, $dateTime);
 
-        // check the dates are the same
+        // check the dates are the same and we can use the Date object as a string
         $this->assertEquals(
-            (new \DateTime('2012-01-01', new \DateTimeZone('UTC')))->format('Y-m-d'),
+            (string)new Date('2012-01-01'),
             $dateTime->format('Y-m-d')
         );
 
