@@ -1,6 +1,12 @@
-# validate
+# www.mizmoz.com / validate
 
-Validation that tries to suck less.
+Validation that tries to suck less
+
+We've used a lot of different validation libraries over time and I've yet to be truly happy with any of them.
+
+The main aim for this is to create a validator that can handle complex items, resolve them and also create nice 
+descriptions of themselves. The dream is to create a validator that can handle REST API data, send useful error
+messages to the user and also a nice description of the endpoint. This will be the face of the Mizmoz API.
 
 # Basic validation
 
