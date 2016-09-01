@@ -172,8 +172,9 @@ class IsArrayOfShapeTest extends TestCase
     public function testUsingDefaultValueWithNestedShapes()
     {
         $validate = new IsArrayOfShape([
-            'games' => Validate::set([
-                'title' => Validate::isString()->setDefault('Monopoly')
+            'games' => new IsArrayOfShape([
+                'title' => Validate::isString()
+                    ->setDefault('Monopoly')
             ])
         ]);
 

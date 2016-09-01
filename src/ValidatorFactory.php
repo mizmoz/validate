@@ -47,6 +47,7 @@ class ValidatorFactory
         'isOneOf' => self::VALIDATOR_NAMESPACE . 'IsOneOf',
         'isOneOfType' => self::VALIDATOR_NAMESPACE . 'IsOneOfType',
         'isSame' => self::VALIDATOR_NAMESPACE . 'IsSame',
+        'isShape' => self::VALIDATOR_NAMESPACE . 'IsShape',
         'isString' => self::VALIDATOR_NAMESPACE . 'IsString',
 
         // resolvers
@@ -115,7 +116,7 @@ class ValidatorFactory
             );
         }
 
-        return static::setHelper($name, $callback, $mustBeUnique);
+        static::setHelper($name, $callback, $mustBeUnique);
     }
 
     /**

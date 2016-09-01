@@ -10,10 +10,19 @@ namespace Mizmoz\Validate\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\ResultContainer;
+use Mizmoz\Validate\Validator\Helper\ArrayAccess;
 use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValidateIterableShapeTrait;
 
-class IsArrayOfShape implements Validator, Validator\Description
+/**
+ * Class IsShape
+ *
+ * Like IsArrayOfShape except it will accept objects also so good for dealing with JSON etc when you might not
+ * have control over something being an array or object.
+ *
+ * @package Mizmoz\Validate\Validator
+ */
+class IsShape implements Validator, Validator\Description
 {
     use ValidateIterableShapeTrait;
 
@@ -50,11 +59,17 @@ class IsArrayOfShape implements Validator, Validator\Description
      */
     public function validate($value) : ResultContract
     {
-        $resultContainer = new ResultContainer('isArrayOfShape');
+        $resultContainer = new ResultContainer('isShape');
 
-        $resultContainer->addResult((new IsArray())->validate($value));
+        $result = (new IsIterable())->validate($value);
+
+        $resultContainer->addResult($result);
         $value = $resultContainer->getValue();
-        $values = (is_array($value) ? $value : []);
+
+        $values = ($result->isValid() ? $value : []);
+        if (! is_array($values) && ! $values instanceof \ArrayAccess) {
+            $values = new ArrayAccess($value);
+        }
 
         return $this->validateIterableShape($this->shape, $values, $resultContainer);
     }

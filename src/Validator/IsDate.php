@@ -46,7 +46,7 @@ class IsDate implements Validator
 
         if (! $isValid) {
             // resolve the date
-            $date = Date::createFromFormat($this->format, $value);
+            $date = Date::create($this->format, $value);
 
             // are the items the same?
             $isValid = ($date && $date->format($this->format) === $value);

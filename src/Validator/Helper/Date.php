@@ -59,7 +59,7 @@ class Date extends DateTime
      * @param DateTimeZone|null $timezone
      * @return Date|null
      */
-    public static function createFromFormat($format, $time, DateTimeZone $timezone = null)
+    public static function create($format, $time, DateTimeZone $timezone = null)
     {
         $dateTime = parent::createFromFormat($format, $time, $timezone);
 

@@ -9,8 +9,8 @@ namespace Mizmoz\Validate;
 
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Exception\RuntimeException;
-use Mizmoz\Validate\Validator\IsArrayOfShape;
 use Mizmoz\Validate\Validator\IsSame;
+use Mizmoz\Validate\Validator\IsShape;
 
 /**
  * Class Validate
@@ -47,24 +47,15 @@ class Validate
     }
 
     /**
-     * @param array $allowed
-     * @return IsArrayOfShape
-     */
-    public static function aclWithSet(array $allowed) : IsArrayOfShape
-    {
-        // return ValidatorFactory::isArrayOfShape($allowed)->
-    }
-
-    /**
-     * Helper as it's easier than typing isArrayOfShapes. Use for things like validating key => value pair like:
+     * Helper as it's easier than typing IsShape. Use for things like validating key => value pair like:
      * Validate::set(['name' => Validate::isString()->isRequired, 'age' => Validate::isInteger()])
      *
      * @param array $allowed
-     * @return IsArrayOfShape
+     * @return IsShape
      */
-    public static function set(array $allowed) : IsArrayOfShape
+    public static function set(array $allowed) : IsShape
     {
-        return ValidatorFactory::isArrayOfShape($allowed);
+        return ValidatorFactory::isShape($allowed);
     }
 
     /**
