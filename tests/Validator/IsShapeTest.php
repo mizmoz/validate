@@ -71,6 +71,35 @@ class IsShapeTest extends TestCase
         ])->getValue());
     }
 
+
+    public function testMoreLotsOfNesting()
+    {
+        $validate = Validate::set([
+            'name' => Validate::isString(),
+            'segment' => Validate::isArrayOf(
+                Validate::isShape([
+                    'name' => Validate::isString(),
+                    'params' => Validate::isString(),
+                    'match' => Validate::isOneOf(['all', 'any'])
+                        ->setDefault('all'),
+                ])
+            )
+        ]);
+
+        $data = [
+            [
+                'name' => 'Ian',
+                'segment' => [
+                    'name' => 123
+                ],
+            ]
+        ];
+
+        $result = $validate->validate($data);
+        $this->assertTrue($result->isValid());
+        $this->assertEquals($data, $result->getValue());
+    }
+
     public function testShapeDescription()
     {
         $validator = Validate::set([

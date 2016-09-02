@@ -28,7 +28,7 @@ class IsArrayOfTest extends ValidatorTestCaseAbstract
         $this->assertFalse((new IsArrayOf(new IsString))->validate('hello')->isValid());
     }
 
-    public function testIsArrayOFNested()
+    public function testIsArrayOfNested()
     {
         // slightly more complicated nested item
         $validate = (new IsArrayOf(
@@ -53,6 +53,28 @@ class IsArrayOfTest extends ValidatorTestCaseAbstract
         ])->isValid());
 
         $this->assertFalse($validate->validate(null)->isValid());
+    }
+
+    public function testLotsOfNesting()
+    {
+        $validate = Validate::isArrayOf(
+            Validate::isShape([
+                'name' => Validate::isString(),
+                'match' => Validate::isOneOf(['all', 'any'])
+                    ->setDefault('all'),
+            ])
+        );
+
+        $data = [
+            [
+                'name' => 'Ian',
+                'match' => 'all',
+            ]
+        ];
+
+        $result = $validate->validate($data);
+        $this->assertTrue($result->isValid());
+        $this->assertEquals($data, $result->getValue());
     }
 
     /**

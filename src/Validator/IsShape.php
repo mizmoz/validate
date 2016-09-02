@@ -46,9 +46,9 @@ class IsShape implements Validator, Validator\Description
      *
      * @param $key
      * @param $validator
-     * @return IsArrayOfShape
+     * @return IsShape
      */
-    public function addShape($key, $validator) : IsArrayOfShape
+    public function addShape($key, $validator) : IsShape
     {
         $this->shape[$key] = $validator;
         return $this;
