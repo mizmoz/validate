@@ -22,7 +22,7 @@ class Chain implements Validator\Description, Validator
     private $validator;
 
     /**
-     * Validate chain
+     * Validator chain
      *
      * @var Validator[]
      */
@@ -32,6 +32,11 @@ class Chain implements Validator\Description, Validator
      * @var bool
      */
     private $breakOnError;
+
+    /**
+     * @var string
+     */
+    private $description = '';
 
     /**
      * @var string
@@ -49,6 +54,18 @@ class Chain implements Validator\Description, Validator
         $this->validator = $validator;
         $this->chain[] = $validator;
         $this->breakOnError = $breakOnError;
+    }
+
+    /**
+     * Set the description
+     *
+     * @param string $description
+     * @return Chain
+     */
+    public function setDescription(string $description) : Chain
+    {
+        $this->description = $description;
+        return $this;
     }
 
     /**
@@ -225,5 +242,13 @@ class Chain implements Validator\Description, Validator
     public function jsonSerialize()
     {
         return $this->getDescription();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return $this->description;
     }
 }

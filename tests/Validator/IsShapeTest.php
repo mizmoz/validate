@@ -107,14 +107,16 @@ class IsShapeTest extends TestCase
                 'music' => Validate::isShape([
                     'bands' => Validate::isString(),
                 ]),
-            ])->isRequired(),
+            ])
+                ->setDescription('Name of the segment')
+                ->isRequired(),
             'status' => Validate::isOneOf(['active', 'inactive'])
                 ->setDefault('active')
         ]);
 
         $this->assertEquals([
             'likes' => [
-                'description' => '',
+                'description' => 'Name of the segment',
                 'isRequired' => true,
                 'isShape' => [
                     'music' => [

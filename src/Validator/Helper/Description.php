@@ -11,6 +11,7 @@
 
 namespace Mizmoz\Validate\Validator\Helper;
 
+use Mizmoz\Validate\Chain;
 use Mizmoz\Validate\Contract\Resolver;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Validate;
@@ -56,7 +57,8 @@ class Description
             }
 
             $rules[$key] = [
-                'description' => '',
+                // get the description if one has been set
+                'description' => ($shape instanceof Chain ? (string)$shape : ''),
             ];
 
             if (is_array(current($validator))) {
