@@ -15,6 +15,7 @@ use Mizmoz\Validate\Resolver\ToModel;
 use Mizmoz\Validate\Tests\Helper\HasMockeryTrait;
 use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Tests\TestModel\User;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class ToModelTest extends TestCase
 {
@@ -27,6 +28,10 @@ class ToModelTest extends TestCase
 
         $this->assertEquals(1, $resolver->resolve(1)->userId);
         $this->assertInstanceOf(User::class, $resolver->resolve(1));
+
+        // resolution with no value
+        $value = new ValueWasNotSet;
+        $this->assertEquals($value, $resolver->resolve($value));
     }
 
     public function testResolveArrayToModel()
