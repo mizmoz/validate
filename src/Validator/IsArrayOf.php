@@ -10,6 +10,7 @@ namespace Mizmoz\Validate\Validator;
 use Mizmoz\Validate\Contract\Result as  ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\ResultContainer;
 use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
@@ -36,29 +37,33 @@ class IsArrayOf implements Validator, Validator\Description
      */
     public function validate($value) : ResultContract
     {
+        $resultContainer = new ResultContainer('isArrayOf');
+
         if ($value instanceof ValueWasNotSet) {
-            $isValid = true;
+            // empty but this is valid unless the field is required
+            $resultContainer->addResult(new Result(
+                true,
+                $value,
+                'isArrayOf'
+            ));
         } else {
             $result = (new IsArray())->validate($value);
-            $isValid = $result->isValid();
+            $resultContainer->addResult($result);
             $value = $result->getValue();
 
-            if ($isValid) {
+            if ($resultContainer->isValid()) {
                 foreach ($value as $v) {
-                    if (! Validate::resolve($this->allowed)->validate($v)->isValid()) {
-                        $isValid = false;
+                    $result = Validate::resolve($this->allowed)->validate($v);
+                    $resultContainer->addResult($result);
+
+                    if (! $resultContainer->isValid()) {
                         break;
                     }
                 }
             }
         }
 
-        return new Result(
-            $isValid,
-            $value,
-            'isArrayOf',
-            (! $isValid ? 'Value is not valid' : '')
-        );
+        return $resultContainer->setValue($value);
     }
 
     /**
