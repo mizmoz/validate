@@ -9,6 +9,7 @@ namespace Mizmoz\Validate\Resolver;
 
 use Mizmoz\Validate\Contract\Resolver;
 use Mizmoz\Validate\Resolver\Helper\CreateObjectTrait;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 /**
  * Class ToModel
@@ -48,6 +49,11 @@ class ToModel implements Resolver
      */
     public function resolve($value)
     {
+        if ($value instanceof ValueWasNotSet) {
+            // value not passed so we can't resolve
+            return $value;
+        }
+
         // create the class
         $class = static::createObject($this->class);
 
