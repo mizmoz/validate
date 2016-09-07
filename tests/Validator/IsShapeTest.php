@@ -9,7 +9,9 @@ namespace Mizmoz\Validate\Tests\Validator;
 
 use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsShape;
+use Mizmoz\Validate\Validator\IsString;
 
 class IsShapeTest extends TestCase
 {
@@ -45,6 +47,18 @@ class IsShapeTest extends TestCase
         $this->assertTrue($result->isValid());
     }
 
+    /**
+     * Test we don't break when passing a ValueWasNotSet object
+     */
+    public function testValueWasNotSet()
+    {
+        $validate = new IsShape([
+            'name' => new IsString()
+        ]);
+
+        $this->assertTrue($validate->validate(new ValueWasNotSet())->isValid());
+    }
+
     public function testUsingDefaultValueWithNestedShapes()
     {
         $validate = new IsShape([
@@ -54,11 +68,13 @@ class IsShapeTest extends TestCase
             ])
         ]);
 
-        $this->assertEquals([
-            'games' => [
-                'title' => 'Monopoly'
-            ]
-        ], $validate->validate([])->getValue());
+        // do this so we can check using arrays as the value is actually an ArrayAccess object
+        $result = $validate->validate([])->getValue();
+
+        // check for the games key
+        $this->assertArrayHasKey('games', $result);
+        $this->assertArrayHasKey('title', $result['games']);
+        $this->assertEquals('Monopoly', $result['games']['title']);
 
         $this->assertEquals([
             'games' => [

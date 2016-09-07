@@ -9,10 +9,12 @@ namespace Mizmoz\Validate\Validator;
 
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
+use Mizmoz\Validate\Result;
 use Mizmoz\Validate\ResultContainer;
 use Mizmoz\Validate\Validator\Helper\ArrayAccess;
 use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValidateIterableShapeTrait;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 /**
  * Class IsShape
@@ -61,9 +63,18 @@ class IsShape implements Validator, Validator\Description
     {
         $resultContainer = new ResultContainer('isShape');
 
-        $result = (new IsIterable())->validate($value);
+        if ($value instanceof ValueWasNotSet) {
+            // no valid value was passed, but we're happy to say we've passed - let any required validator catch this
+            $result = new Result(true, $value, 'isShape');
+        } else {
+            // check the value is iterable
+            $result = (new IsIterable())->validate($value);
+        }
 
+        // add the result to the container
         $resultContainer->addResult($result);
+
+        // get the value
         $value = $resultContainer->getValue();
 
         $values = ($result->isValid() ? $value : []);

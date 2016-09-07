@@ -9,9 +9,11 @@ namespace Mizmoz\Validate\Validator;
 
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
+use Mizmoz\Validate\Result;
 use Mizmoz\Validate\ResultContainer;
 use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValidateIterableShapeTrait;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class IsArrayOfShape implements Validator, Validator\Description
 {
@@ -52,9 +54,17 @@ class IsArrayOfShape implements Validator, Validator\Description
     {
         $resultContainer = new ResultContainer('isArrayOfShape');
 
-        $resultContainer->addResult((new IsArray())->validate($value));
+        if ($value instanceof ValueWasNotSet) {
+            // no valid value was passed, but we're happy to say we've passed - let any required validator catch this
+            $result = new Result(true, $value, 'isArrayOfShape');
+        } else {
+            // check the value is an array
+            $result = (new IsArray())->validate($value);
+        }
+
+        $resultContainer->addResult($result);
         $value = $resultContainer->getValue();
-        $values = (is_array($value) ? $value : []);
+        $values = (is_array($value) || $value instanceof \ArrayAccess ? $value : []);
 
         return $this->validateIterableShape($this->shape, $values, $resultContainer);
     }

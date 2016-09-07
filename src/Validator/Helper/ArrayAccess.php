@@ -17,7 +17,7 @@ use Mizmoz\Validate\Exception\RuntimeException;
  * Class ArrayAccess
  * @package Mizmoz\Validate\Validator\Helper
  */
-class ArrayAccess implements \ArrayAccess, \Iterator
+class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
 {
     /**
      * @var Object
@@ -71,7 +71,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator
      */
     public function offsetGet($offset)
     {
-        return ($this->offsetExists($offset) ? $this->object->$offset : null);
+        return ($this->offsetExists($offset) ? $this->object->$offset : new ValueWasNotSet());
     }
 
     /**
@@ -132,5 +132,32 @@ class ArrayAccess implements \ArrayAccess, \Iterator
     public function rewind()
     {
         $this->position = 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Return the object as an array
+     *
+     * @return array
+     */
+    public function toArray() : array
+    {
+        $values = [];
+        foreach ($this as $key => $value) {
+            if ($value instanceof ArrayAccess) {
+                $value = $value->toArray();
+            }
+
+            $values[$key] = $value;
+        }
+
+        return $values;
     }
 }

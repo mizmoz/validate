@@ -196,6 +196,15 @@ class IsArrayOfShapeTest extends ValidatorTestCaseAbstract
         ])->getValue());
     }
 
+    public function testValueWasNotSet()
+    {
+        $validate = new IsArrayOfShape([
+            'name' => new IsString()
+        ]);
+
+        $this->assertTrue($validate->validate(new ValueWasNotSet())->isValid());
+    }
+
     /**
      * @inheritDoc
      */
