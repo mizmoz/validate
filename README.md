@@ -8,6 +8,13 @@ The main aim for this is to create a validator that can handle complex items, re
 descriptions of themselves. The dream is to create a validator that can handle REST API data, send useful error
 messages to the user and also a nice description of the endpoint. This will be the face of the Mizmoz API.
 
+## On the todo list
+
+- Formalise the API
+- Optional descriptions in OpenAPI format: https://github.com/OAI/OpenAPI-Specification
+- Create validators as ReactJS components. Parse the description from Chain to form components.
+- Add more validators!
+
 # Composer installation
 
 It's probably worth pointing out the API is really new and very likely to change.
@@ -50,10 +57,12 @@ $userId = $result->getValue();
 // Validate a set of items
 $result = Validate::set([
     'name' => Validate::isString()
+        ->setDescription('Subscriber name')
         ->isRequired(),
     'email' => Validate::isEmail()
         ->isRequired(),
     'sendNewsletter' => Validate::isBoolean()
+        ->setDescription('Subscribe the email address to the newsletter?')
         ->setDefault(false)
 ])->validate($_POST);
 
@@ -76,4 +85,53 @@ ValidateFactory::setHelper('aclOwner', function () {
 
 Validate::aclAuthenticated(\User::current())->validate(\User::get(1));
 
+```
+
+### IsFilter
+
+The filter is a pretty cool helper for parsing strings for filtering.
+
+#### Basic hash tags with example usage
+
+We use the filter to map to column names for things like statuses etc. Only @tag & #tag are supported anything else
+will be returned in the filter key as plain text
+
+```php
+$validate = new IsFilter([
+    '#active|#deleted' => 'userStatus'
+]);
+
+$result = $validate->validate('#deleted')->getValue(); // returns ['userStatus' => ['delete'], 'filter' => '']
+
+$model = User::create();
+foreach ($result as $column => $value) {
+    // we have some magic attached to our models for filtering also but you get the idea of how this can be used ;)
+    $model->where($column, $value);
+}
+$model->fetch();
+
+```
+
+Special :isInteger tagging
+
+```php
+$validate = new IsFilter([
+    '@:isInteger' => 'userId'
+]);
+
+$result = $validate->validate('@123 @456')->getValue(); // returns returns ['userId' => [123, 456], 'filter' => '']
+```
+
+The filter value has any tags removed
+
+```php
+$validate = new IsFilter([
+    '#subscribed' => 'userStatus'
+]);
+
+$result = $validate->validate('Bob')->getValue(); // returns ['filter' => 'Bob']
+
+// or with tags
+
+$result = $validate->validate('Bob #subscribed')->getValue(); // returns ['userStatus' => 'subscribed', 'filter' => 'Bob']
 ```

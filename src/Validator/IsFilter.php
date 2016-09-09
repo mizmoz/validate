@@ -78,11 +78,23 @@ class IsFilter implements Validator, Validator\Description
 
             $decorators = [];
             foreach ($tags as $tag) {
+                $type = substr($tag, 0, 1);
+
                 // remove the tag from the filter
                 $value = trim(str_replace($tag, '', $value));
 
                 // validate the tags
                 if ($this->tags && ! isset($this->tags[$tag])) {
+                    $tagValue = substr($tag, 1);
+
+                    // handle special @:isInteger or #:isInteger fields
+                    if (isset($this->tags[$type . ':isInteger']) && (new IsInteger())->validate($tagValue)) {
+                        $name = key($this->tags[$type . ':isInteger']);
+                        $decorators[$name] = (isset($decorators[$name]) ? $decorators[$name] : []);
+                        $decorators[$name][] = (new IsInteger())->validate($tagValue)->getValue();
+                        continue;
+                    }
+
                     // skip not allowed tag
                     continue;
                 }

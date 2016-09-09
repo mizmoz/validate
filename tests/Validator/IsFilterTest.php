@@ -13,7 +13,7 @@ use Mizmoz\Validate\Validator\IsFilter;
 
 class IsFilterTest extends ValidatorTestCaseAbstract
 {
-    public function testIsOneOf()
+    public function testFilter()
     {
         $validator = new IsFilter([
             // apply the where using a callback
@@ -41,6 +41,40 @@ class IsFilterTest extends ValidatorTestCaseAbstract
 
         // callback works as expected?
         $this->assertEquals('#paying=cheese', $decorator['#paying']('#paying', 'cheese'));
+
+        // check basic conversion type tags
+        $this->assertEquals([
+            'networkStatus' => ['active'],
+            'filter' => '',
+        ], $validator->validate('#active')->getValue());
+    }
+
+    /**
+     * Test :isInteger match
+     */
+    public function testFilterWithValue()
+    {
+        $validator = Validate::isFilter([
+            '@:isInteger' => 'userId'
+        ]);
+
+        // single value
+        $this->assertEquals([
+            'filter' => '',
+            'userId' => [
+                123
+            ],
+        ], $validator->validate('@123')->getValue());
+
+        // multiple values
+        $this->assertEquals([
+            'filter' => '',
+            'userId' => [
+                123,
+                456,
+                789
+            ],
+        ], $validator->validate('@123 @456 @789')->getValue());
     }
 
     /**
