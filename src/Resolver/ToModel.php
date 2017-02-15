@@ -61,13 +61,11 @@ class ToModel implements Resolver
             // value is an array to we'll need to apply all of the items to the where
             $value = ($this->pick ? array_intersect($this->pick, array_keys($value)) : $value);
 
-            $model = $class->populate($value)
+            return $class->populate($value)
                 ->get();
-        } else {
-            // basic get the model
-            $model = $class->get($value);
         }
 
-        return $model;
+        // basic model get by key
+        return $class->get($value);
     }
 }

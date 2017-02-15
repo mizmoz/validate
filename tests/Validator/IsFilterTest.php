@@ -93,6 +93,32 @@ class IsFilterTest extends ValidatorTestCaseAbstract
     }
 
     /**
+     * Test the filter will ignore email addresses
+     */
+    public function testFilterWithEmail()
+    {
+        $validate = Validate::isFilter(['@:isInteger' => 'id']);
+        $result = $validate->validate('support@mizmoz.com');
+        $value = $result->getValue();
+
+        // should not touch the email address
+        $this->assertEquals('support@mizmoz.com', $value);
+        $this->assertTrue($result->isValid());
+
+        $validate = Validate::isFilter(['@:isInteger' => 'id']);
+        $result = $validate->validate('support@mizmoz.com @12345');
+
+        // should not touch the email address
+        $this->assertEquals([
+            'filter' => 'support@mizmoz.com',
+            'id' => [
+                12345,
+            ]
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+    }
+
+    /**
      * Test serialisation
      */
     public function testJsonSerialize()

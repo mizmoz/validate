@@ -72,9 +72,9 @@ class IsFilter implements Validator, Validator\Description
         $isSet = ! ($value instanceof ValueWasNotSet);
 
         // parse the value for any filter options
-        if ($isSet && preg_match_all('/[#@][^\s]*/i', $value, $result, PREG_PATTERN_ORDER)) {
+        if ($isSet && preg_match_all('/(^|\s)([#@][^\s]*)/i', $value, $result, PREG_PATTERN_ORDER)) {
             // get all the tags
-            $tags = array_unique($result[0]);
+            $tags = array_unique($result[2]);
 
             $decorators = [];
             foreach ($tags as $tag) {
