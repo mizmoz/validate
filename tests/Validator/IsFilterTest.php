@@ -186,6 +186,35 @@ class IsFilterTest extends ValidatorTestCaseAbstract
     }
 
     /**
+     * Testing you can use default tags with a call back rather than just a string
+     */
+    public function testFilterWithDefaultTagAndCallback()
+    {
+        $callback = function ($tag) {
+            return $tag . '-rar';
+        };
+
+        /**
+         * With another tag
+         */
+        $validator = new IsFilter([
+            // use multiple hash tags and use the hash tag value as the where clause value
+            '#active*|#credit-hold' => $callback,
+        ], true);
+
+        $result = $validator->validate('');
+
+        // valid item
+        $this->assertEquals([
+            'filter' => '',
+            '#active' => [
+                $callback,
+            ]
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+    }
+
+    /**
      * Test serialisation
      */
     public function testJsonSerialize()

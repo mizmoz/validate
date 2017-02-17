@@ -1,4 +1,8 @@
 
+v0.5.1
+
+- Fix bug where tags with callbacks couldn’t use multiple tag names such as #active|#inactive => callback
+
 v0.5.0
 
 - Add new filtering options to allow default tags
