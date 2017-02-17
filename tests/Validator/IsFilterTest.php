@@ -119,6 +119,73 @@ class IsFilterTest extends ValidatorTestCaseAbstract
     }
 
     /**
+     * Allow specifying a set of tags with one set as the default when none are present
+     */
+    public function testFilterWithDefaultTag()
+    {
+        $validator = new IsFilter([
+            // use multiple hash tags and use the hash tag value as the where clause value
+            '#active*|#credit-hold' => 'networkStatus',
+        ]);
+
+        $result = $validator->validate('');
+
+        // valid item
+        $this->assertEquals([
+            'filter' => '',
+            'networkStatus' => [
+                'active',
+            ]
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+
+        /**
+         * With text filter
+         */
+        $result = $validator->validate('ian');
+
+        // valid item
+        $this->assertEquals([
+            'filter' => 'ian',
+            'networkStatus' => [
+                'active',
+            ]
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+    }
+
+    /**
+     * Testing we always get the defaults even with multiple groups
+     */
+    public function testFilterWithDefaultTagAndOtherTagGroup()
+    {
+        /**
+         * With another tag
+         */
+        $validator = new IsFilter([
+            // use multiple hash tags and use the hash tag value as the where clause value
+            '#active*|#credit-hold' => 'networkStatus',
+
+            // some other tag
+            '#good|#bad' => 'rating',
+        ]);
+
+        $result = $validator->validate('#good');
+
+        // valid item
+        $this->assertEquals([
+            'filter' => '',
+            'rating' => [
+                'good',
+            ],
+            'networkStatus' => [
+                'active',
+            ]
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+    }
+
+    /**
      * Test serialisation
      */
     public function testJsonSerialize()

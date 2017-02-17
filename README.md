@@ -133,5 +133,55 @@ $result = $validate->validate('Bob')->getValue(); // returns ['filter' => 'Bob']
 
 // or with tags
 
-$result = $validate->validate('Bob #subscribed')->getValue(); // returns ['userStatus' => 'subscribed', 'filter' => 'Bob']
+$result = $validate->validate('Bob #subscribed')->getValue(); // returns ['userStatus' => ['subscribed'], 'filter' => 'Bob']
 ```
+
+Default tags when no tags are present using the *
+
+```php
+// active is marked as the default
+$validate = new IsFilter([
+    '#active*|#inactive' => 'status'
+]);
+
+$validate->validate('')->getValue(); // returns ['status' => ['active']]
+
+// Or with a filter
+$validate->validate('Bob')->getValue(); // returns ['status' => ['active'], 'filter' => 'Bob']
+```
+
+Defaults are for the defined group so you can have other tags without defaults
+
+```php
+// active is marked as the default
+$validate = new IsFilter([
+    '#active*|#inactive' => 'status',
+    '#admin|#user' => 'role',
+]);
+
+$validate->validate('')->getValue(); // returns ['status' => ['active']]
+
+// Or with a tag
+$validate->validate('#admin')->getValue(); // returns ['status' => ['active'], 'role' => ['admin']]
+```
+
+## Road map
+
+### Validators
+
+#### IsPassword
+
+Check a string matches the requirements for the password. 
+
+- Minimum length
+- Uppercase characters
+- Lowercase characters
+- Special characters
+- Numbers
+
+
+### Resolvers
+
+#### ToHash
+
+Create a hash of the given data with various techniques. MD5, SHA1, password_hash etc.

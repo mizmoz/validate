@@ -17,7 +17,12 @@ class IsFilter implements Validator, Validator\Description
     /**
      * @var array
      */
-    private $tags;
+    private $tags = [];
+
+    /**
+     * @var
+     */
+    private $defaults = [];
 
     /**
      * @var array
@@ -44,6 +49,10 @@ class IsFilter implements Validator, Validator\Description
     {
         // parse the tags
         foreach ($tags as $key => $value) {
+            $group = [
+                'default' => null,
+                'tags' => [],
+            ];
             $keys = explode('|', (is_int($key) ? $value : $key));
 
             foreach ($keys as $k) {
@@ -51,10 +60,22 @@ class IsFilter implements Validator, Validator\Description
 
                 if (! is_array($value) && ! is_callable($value)) {
                     $v = str_replace(['@', '#'], '', $k);
+
+                    if (strpos($v, '*') !== false) {
+                        $v = str_replace('*', '', $v);
+                        $group['default'] = $v;
+                    }
+
+                    $group['tags'][] = $v;
                     $v = [$value => $v];
                 }
 
                 $this->tags[$k] = $v;
+            }
+
+            if (isset($group['default'])) {
+                // add the groups
+                $this->defaults[$value] = $group;
             }
         }
 
@@ -62,6 +83,32 @@ class IsFilter implements Validator, Validator\Description
         $this->allowed = array_keys($this->tags);
 
         return $this;
+    }
+
+    /**
+     * Set any default tags
+     *
+     * @param $value
+     * @return array|string
+     */
+    private function setDefaults($value)
+    {
+        foreach ($this->defaults as $key => $defaults) {
+            if (is_string($value)) {
+                $value = [
+                    'filter' => $value,
+                    $key => [
+                        $defaults['default']
+                    ],
+                ];
+            } else if (is_array($value)) {
+                $value[$key] = [
+                    $defaults['default']
+                ];
+            }
+        }
+
+        return $value;
     }
 
     /**
@@ -117,6 +164,8 @@ class IsFilter implements Validator, Validator\Description
             // update the value with the decorators
             $value = $decorators;
         }
+
+        $value = $this->setDefaults($value);
 
         return new Result(
             true,
