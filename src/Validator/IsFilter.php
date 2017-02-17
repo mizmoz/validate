@@ -34,9 +34,8 @@ class IsFilter implements Validator, Validator\Description
      *
      * @param array $tags
      */
-    public function __construct(array $tags = [], $test = false)
+    public function __construct(array $tags = [])
     {
-        $this->test = $test;
         $this->setTags($tags);
     }
 
