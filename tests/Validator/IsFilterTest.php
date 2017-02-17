@@ -140,6 +140,20 @@ class IsFilterTest extends ValidatorTestCaseAbstract
         $this->assertTrue($result->isValid());
 
         /**
+         * With a tag used
+         */
+        $result = $validator->validate('#credit-hold');
+
+        // valid item
+        $this->assertEquals([
+            'filter' => '',
+            'networkStatus' => [
+                'credit-hold',
+            ]
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+
+        /**
          * With text filter
          */
         $result = $validator->validate('ian');
@@ -194,9 +208,6 @@ class IsFilterTest extends ValidatorTestCaseAbstract
             return $tag . '-rar';
         };
 
-        /**
-         * With another tag
-         */
         $validator = new IsFilter([
             // use multiple hash tags and use the hash tag value as the where clause value
             '#active*|#credit-hold' => $callback,
@@ -207,9 +218,24 @@ class IsFilterTest extends ValidatorTestCaseAbstract
         // valid item
         $this->assertEquals([
             'filter' => '',
-            '#active' => [
-                $callback,
-            ]
+            '#active' => $callback,
+        ], $result->getValue());
+        $this->assertTrue($result->isValid());
+
+        $decorator = $result->getValue()['#active'];
+
+        // callback works as expected?
+        $this->assertEquals('#active-rar', $decorator('#active'));
+
+        /**
+         * With a tag
+         */
+        $result = $validator->validate('#credit-hold');
+
+        // valid item
+        $this->assertEquals([
+            'filter' => '',
+            '#credit-hold' => $callback,
         ], $result->getValue());
         $this->assertTrue($result->isValid());
     }

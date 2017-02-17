@@ -1,6 +1,6 @@
 {
     "name": "mizmoz/validate",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "Validation inspired by React Prop Types",
     "homepage": "https://www.mizmoz.com/",
     "type": "library",

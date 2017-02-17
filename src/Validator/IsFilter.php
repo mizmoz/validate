@@ -104,28 +104,41 @@ class IsFilter implements Validator, Validator\Description
     private function setDefaults($value)
     {
         foreach ($this->defaults as $defaults) {
+            // get the actual value of the default item
             $defaultsValue = $defaults['value'];
-            
+
             if (! is_array($defaultsValue) && ! is_callable($defaultsValue)) {
                 // #active => status kind of tag
                 $key = $defaultsValue;
-                $defaultsValue = $defaults['default'];
+                $defaultsValue = [
+                    $defaults['default']
+                ];
+
+                // check the value doesn't already exist
+                if (is_array($value) && array_key_exists($key, $value)) {
+                    // default exists
+                    continue;
+                }
+
             } else {
                 // #active => callback() kind of tag
                 $key = $defaults['default'];
+
+                // check the value doesn't already exist
+                if (is_array($value) && array_intersect(array_keys($value), $defaults['tags'])) {
+                    // default already exists
+                    continue;
+                }
             }
 
             if (is_string($value)) {
                 $value = [
                     'filter' => $value,
-                    $key => [
-                        $defaultsValue
-                    ],
+                    $key => $defaultsValue,
                 ];
             } else if (is_array($value)) {
-                $value[$key] = [
-                    $defaultsValue
-                ];
+                // check the default doesn't already exist
+                $value[$key] = $defaultsValue;
             }
         }
 
