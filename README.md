@@ -23,6 +23,19 @@ It's probably worth pointing out the API is really new and very likely to change
 composer require mizmoz/validate
 ```
 
+# Keeping the resources up to date
+
+If you‘re using the IsEmailDisposable validator you‘ll want to make sure you‘re using
+an up to date list of disposable email host names.
+
+Best practice is you create a cron job that executes the update below.
+
+```
+php bin/mizmoz update
+```
+
+See the resources folder for an example cron file that should be placed in /etc/cron.d.
+
 # Basic validation
 
 ```php
@@ -86,6 +99,14 @@ ValidateFactory::setHelper('aclOwner', function () {
 Validate::aclAuthenticated(\User::current())->validate(\User::get(1));
 
 ```
+
+### IsEmail
+
+Check if the value is a valid email address
+
+### IsEmailDisposable
+
+Check if the value is a disposable email address like guerillamail.com etc
 
 ### IsFilter
 
@@ -167,6 +188,18 @@ $validate->validate('#admin')->getValue(); // returns ['status' => ['active'], '
 
 ## Road map
 
+### General
+
+Allow positive or negative matching. Possibly like this:
+
+```php
+// Positive match
+Validate::is()->email();
+
+// Negative match
+Validate::not()->email();
+```
+
 ### Validators
 
 #### IsPassword
@@ -178,7 +211,6 @@ Check a string matches the requirements for the password.
 - Lowercase characters
 - Special characters
 - Numbers
-
 
 ### Resolvers
 

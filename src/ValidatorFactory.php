@@ -44,6 +44,7 @@ class ValidatorFactory
         'isBoolean' => self::VALIDATOR_NAMESPACE . 'IsBoolean',
         'isDate' => self::VALIDATOR_NAMESPACE . 'IsDate',
         'isEmail' => self::VALIDATOR_NAMESPACE . 'IsEmail',
+        'isEmailDisposable' => self::VALIDATOR_NAMESPACE . 'IsEmailDisposable',
         'isFilter' => self::VALIDATOR_NAMESPACE . 'IsFilter',
         'isInteger' => self::VALIDATOR_NAMESPACE . 'IsInteger',
         'isNumeric' => self::VALIDATOR_NAMESPACE . 'IsNumeric',

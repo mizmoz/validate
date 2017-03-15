@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+ini_set('memory_limit', '128M');
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Mizmoz\Validate\Console\UpdateCommand;
+
+$application = new Application();
+
+// register the update command
+$application->add(new UpdateCommand());
+
+// run
+$application->run();

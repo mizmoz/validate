@@ -1,0 +1,2 @@
+# update the mizmoz resources each night
+0 0 * * * www-data php /path/to/director/mizmoz update

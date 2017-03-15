@@ -1,4 +1,10 @@
 
+v0.6.0
+
+- Add new IsEmailDisposable validator to check for email addresses like bob@guerillamail.com
+- Add option to invalidate IsEmail if the passed value is a disposable email
+- Add `mizmoz update` helper for updating the disposable hosts  
+
 v0.5.2
 
 - Fix bug where tags default values always returned the default value

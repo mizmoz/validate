@@ -1,6 +1,6 @@
 {
     "name": "mizmoz/validate",
-    "version": "0.5.2",
+    "version": "0.6.0",
     "description": "Validation inspired by React Prop Types",
     "homepage": "https://www.mizmoz.com/",
     "type": "library",
@@ -11,7 +11,10 @@
             "email": "chad@mizmoz.com"
         }
     ],
-    "require": {},
+    "require": {
+        "symfony/console": "^3.2",
+        "guzzlehttp/guzzle": "^6.2"
+    },
     "require-dev": {
         "phpunit/phpunit": "^5.5",
         "mockery/mockery": "^0.9.5"
@@ -26,5 +29,14 @@
         "psr-4": {
             "Mizmoz\\Validate\\Tests\\": "tests/"
         }
+    },
+    "bin": ["bin/mizmoz"],
+    "scripts": {
+        "post-install-cmd": [
+            "php bin/mizmoz update"
+        ],
+        "post-update-cmd": [
+            "php bin/mizmoz update"
+        ]
     }
 }

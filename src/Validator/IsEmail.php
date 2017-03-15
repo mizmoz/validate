@@ -15,18 +15,26 @@ use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 class IsEmail implements Validator
 {
     /**
-     * @var bool
+     * Default options for the validation
      */
-    private $strict;
+    const DEFAULT_OPTIONS = [
+        // Allow disposable email addresses like guerillamail
+        'allowDisposable' => true,
+    ];
+
+    /**
+     * @var array
+     */
+    private $options = [];
 
     /**
      * IsEmail constructor.
      *
-     * @param bool $strict Check DNS records for a mail server at the domain
+     * @param array $options - see default options above
      */
-    public function __construct(bool $strict = false)
+    public function __construct(array $options = [])
     {
-        $this->strict = $strict;
+        $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
     }
 
     /**
@@ -43,10 +51,20 @@ class IsEmail implements Validator
             $isValid = ! $message;
         }
 
+        if ($isValid && ! $this->options['allowDisposable']) {
+            // check if this is a disposable email
+            $result = (new IsEmailDisposable())->validate($value);
+
+            if ($result->isValid()) {
+                $isValid = false;
+                $message = 'Email address is disposable';
+            }
+        }
+
         return new Result(
             $isValid,
             $value,
-            'isString',
+            'isEmail',
             $message
         );
     }
@@ -78,7 +96,7 @@ class IsEmail implements Validator
      * Splits the given value in hostname and local part of the email address
      *
      * @param string $value Email address to be split
-     * @return bool Returns false when the email can not be split
+     * @return bool|array Returns false when the email can not be split
      */
     private function splitEmailParts($value)
     {

@@ -27,5 +27,8 @@ class IsEmailTest extends TestCase
         $this->assertFalse((new IsEmail())->validate('as..')->isValid());
         $this->assertFalse((new IsEmail())->validate('')->isValid());
         $this->assertFalse((new IsEmail())->validate()->isValid());
+
+        // check disposable emails are not allowed
+        $this->assertFalse((new IsEmail(['allowDisposable' => false]))->validate('bob@discardmail.com')->isValid());
     }
 }
