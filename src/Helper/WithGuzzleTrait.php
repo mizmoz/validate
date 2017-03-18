@@ -8,7 +8,7 @@
  * @copyright Copyright (c) Mizmoz Limited 2017. All rights reserved.
  */
 
-namespace Mizmoz\Validate\Console;
+namespace Mizmoz\Validate\Helper;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;

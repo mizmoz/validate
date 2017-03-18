@@ -13,6 +13,8 @@ messages to the user and also a nice description of the endpoint. This will be t
 - Formalise the API
 - Optional descriptions in OpenAPI format: https://github.com/OAI/OpenAPI-Specification
 - Create validators as ReactJS components. Parse the description from Chain to form components.
+- Add docs for all remaining validators... there are quite a few more than listed here so 
+be sure to have a look in the src/Validator directory.
 - Add more validators!
 
 # Composer installation
@@ -104,9 +106,19 @@ Validate::aclAuthenticated(\User::current())->validate(\User::get(1));
 
 Check if the value is a valid email address
 
+```php
+(new IsEmail())
+    ->validate('support@mizmoz.com'); // true
+```
+
 ### IsEmailDisposable
 
 Check if the value is a disposable email address like guerillamail.com etc
+
+```php
+(new IsEmailDisposable())
+    ->validate('bob@guerillamail.com'); // true
+```
 
 ### IsFilter
 
@@ -184,6 +196,15 @@ $validate->validate('')->getValue(); // returns ['status' => ['active']]
 
 // Or with a tag
 $validate->validate('#admin')->getValue(); // returns ['status' => ['active'], 'role' => ['admin']]
+```
+
+### IsReCaptcha
+
+Validate a reCAPTCHA response
+
+```php
+(new IsReCaptcha($secret))
+    ->validate($response);
 ```
 
 ## Road map

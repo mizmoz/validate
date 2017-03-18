@@ -1,7 +1,12 @@
 
+v0.7.0
+
+- Add IsReCaptcha to validate reCAPTCHA responses
+- Fix code style issues
+
 v0.6.0
 
-- Add new IsEmailDisposable validator to check for email addresses like bob@guerillamail.com
+- Add IsEmailDisposable validator to check for email addresses like bob@guerillamail.com
 - Add option to invalidate IsEmail if the passed value is a disposable email
 - Add `mizmoz update` helper for updating the disposable hosts  
 

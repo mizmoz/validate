@@ -26,15 +26,20 @@ trait ValidateIterableShapeTrait
      * @param ResultContainer $resultContainer
      * @return ResultContract
      */
-    private function validateIterableShape(array $shapes, $values, ResultContainer $resultContainer) : ResultContract
-    {
+    private function validateIterableShape(
+        array $shapes,
+        $values,
+        ResultContainer $resultContainer
+    ) : ResultContract {
         if (! is_array($shapes) && ! $shapes instanceof \ArrayAccess) {
             throw new InvalidHelperTypeException('$shapes must implement ArrayAccess');
         }
 
         foreach ($shapes as $key => $shape) {
-            // get the value for the key - we accept that a null value in an object might not be interpreted correctly
-            $keyValue = (isset($values[$key]) || array_key_exists($key, $values) ? $values[$key] : new ValueWasNotSet());
+            // get the value for the key - we accept that a null value in an object might
+            // not be interpreted correctly
+            $keyValue = (isset($values[$key]) || array_key_exists($key, $values)
+                ? $values[$key] : new ValueWasNotSet());
 
             // get the result
             $result = Validate::resolve($shape, $key)->validate($keyValue);

@@ -11,7 +11,7 @@
 namespace Mizmoz\Validate\Console\Update;
 
 use \DateTime;
-use Mizmoz\Validate\Console\WithGuzzleTrait;
+use Mizmoz\Validate\Helper\WithGuzzleTrait;
 use Mizmoz\Validate\Exception\RuntimeException;
 
 class IsEmailDisposable
@@ -98,7 +98,7 @@ class IsEmailDisposable
      */
     private function writeHostsToFile(string $fileName, array $hosts) : bool
     {
-        if (! ($fp = fopen($fileName, 'w'))) {
+        if (! ($fpHosts = fopen($fileName, 'w'))) {
             throw new RuntimeException('Can‘t open file for writing: ' . $fileName);
         }
 
@@ -106,17 +106,17 @@ class IsEmailDisposable
         $hosts = array_unique($hosts);
         asort($hosts);
 
-        fputs($fp, "<?php\n\n");
-        fputs($fp, '// Last updated: ' . (new DateTime())->format(DateTime::RSS) . "\n\n");
-        fputs($fp, "return [\n");
+        fputs($fpHosts, "<?php\n\n");
+        fputs($fpHosts, '// Last updated: ' . (new DateTime())->format(DateTime::RSS) . "\n\n");
+        fputs($fpHosts, "return [\n");
 
         foreach ($hosts as $host) {
-            fputs($fp, "  '" . sha1(strtolower(trim($host))) ."' => '" . $host . "',\n");
+            fputs($fpHosts, "  '" . sha1(strtolower(trim($host))) ."' => '" . $host . "',\n");
         }
 
-        fputs($fp, "];\n");
+        fputs($fpHosts, "];\n");
 
-        fclose($fp);
+        fclose($fpHosts);
 
         return true;
     }
