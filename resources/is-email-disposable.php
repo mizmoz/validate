@@ -1,6 +1,6 @@
 <?php
 
-// Last updated: Wed, 15 Mar 2017 17:57:28 +0100
+// Last updated: Mon, 03 Apr 2017 16:31:48 +0200
 
 return [
   '11ddb50e46f348cd636152db84488014c3d88d83' => '0-mail.com',
@@ -858,6 +858,7 @@ return [
   '36d74dfff7a51f067a99f2462f60c289019928cb' => 'herpderp.nl',
   'c26e9e81b9c019cc893b39ed3a42975b2e84a905' => 'hi5.si',
   '611d8152e3b03de6eb7c6731e96847f100f11b14' => 'hiddentragedy.com',
+  '1df180cbbb12f3166f912f590118f3b52a244dc6' => 'hidebox.org',
   'e87c802660892c92f1f7542d2986e675910a0aa2' => 'hidemail.de',
   '0172fead16262b442a3abe9c607225fc51d21b22' => 'hidzz.com',
   '28d55edecb2e9b27d19f532a6795b866cd4394c2' => 'highbros.org',
