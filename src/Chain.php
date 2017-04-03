@@ -119,6 +119,19 @@ class Chain implements Validator\Description, Validator
     }
 
     /**
+     * Validate the number range
+     *
+     * @param int $min
+     * @param int $max
+     * @return Chain
+     */
+    public function numberIsRange(int $min = null, int $max = null) : Chain
+    {
+        $this->chain[] = ValidatorFactory::numberIsRange($min, $max);
+        return $this;
+    }
+
+    /**
      * Validate the string length
      *
      * @param int $min

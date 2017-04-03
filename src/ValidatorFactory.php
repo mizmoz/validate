@@ -23,6 +23,11 @@ class ValidatorFactory
     const VALIDATOR_NAMESPACE = __NAMESPACE__ . '\\Validator\\';
 
     /**
+     * Number validation
+     */
+    const VALIDATOR_NUMBER_NAMESPACE = __NAMESPACE__ . '\\Validator\\Number\\';
+
+    /**
      * Text validation
      */
     const VALIDATOR_TEXT_NAMESPACE = __NAMESPACE__ . '\\Validator\\Text\\';
@@ -55,7 +60,10 @@ class ValidatorFactory
         'isShape' => self::VALIDATOR_NAMESPACE . 'IsShape',
         'isString' => self::VALIDATOR_NAMESPACE . 'IsString',
 
-        // special validators
+        // special number validators
+        'numberIsRange' => self::VALIDATOR_NUMBER_NAMESPACE . 'IsRange',
+
+        // special text validators
         'textIsLength' => self::VALIDATOR_TEXT_NAMESPACE . 'IsLength',
 
         // resolvers
