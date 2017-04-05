@@ -20,7 +20,7 @@ use Mizmoz\Validate\Validator\IsShape;
  * @method static Chain isArrayOf($allowed)
  * @method static Chain isArrayOfShape(array $shape)
  * @method static Chain isBoolean()
- * @method static Chain isDate(string $format = 'Y-m-d', bool $setValueToDateTime = true)
+ * @method static Chain isDate(array $options = [])
  * @method static Chain isEmailDisposable()
  * @method static Chain isEmail(array $options = [])
  * @method static Chain isFilter(array $tags = [])

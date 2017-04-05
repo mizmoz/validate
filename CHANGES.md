@@ -1,4 +1,9 @@
 
+v0.8.0
+
+- Breaking Change for IsDate to accept an array of options in it‘s constructor
+- Add ability to make IsDate not strict so it will treat an empty string as ValueNotSet
+
 v0.7.3
 
 - Add ability to resolve child data in IsArrayOf

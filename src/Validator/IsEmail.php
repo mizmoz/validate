@@ -10,31 +10,22 @@ namespace Mizmoz\Validate\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\Validator\Helper\ConstructorWithOptionsTrait;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class IsEmail implements Validator
 {
-    /**
-     * Default options for the validation
-     */
-    const DEFAULT_OPTIONS = [
-        // Allow disposable email addresses like guerillamail
-        'allowDisposable' => true,
-    ];
+    use ConstructorWithOptionsTrait;
 
     /**
-     * @var array
+     * @inheritDoc
      */
-    private $options = [];
-
-    /**
-     * IsEmail constructor.
-     *
-     * @param array $options - see default options above
-     */
-    public function __construct(array $options = [])
+    public static function getDefaultOptions(array $options): array
     {
-        $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
+        return [
+            // Allow disposable email addresses like guerrilla mail
+            'allowDisposable' => true,
+        ];
     }
 
     /**
@@ -51,7 +42,7 @@ class IsEmail implements Validator
             $isValid = ! $message;
         }
 
-        if ($isValid && ! $this->options['allowDisposable']) {
+        if ($isValid && ! $this->option('allowDisposable')) {
             // check if this is a disposable email
             $result = (new IsEmailDisposable())->validate($value);
 

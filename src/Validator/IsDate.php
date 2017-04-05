@@ -7,6 +7,7 @@
 
 namespace Mizmoz\Validate\Validator;
 
+use Mizmoz\Validate\Validator\Helper\ConstructorWithOptionsTrait;
 use Mizmoz\Validate\Validator\Helper\Date;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
@@ -15,26 +16,23 @@ use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class IsDate implements Validator, Validator\Description
 {
-    /**
-     * @var string
-     */
-    private $format;
+    use ConstructorWithOptionsTrait;
 
     /**
-     * @var bool
+     * @inheritDoc
      */
-    private $setValueToDateTime;
-
-    /**
-     * IsDate constructor.
-     *
-     * @param string $format
-     * @param bool $setValueToDateTime Should the value before set to the resolved Date object or left alone?
-     */
-    public function __construct(string $format = 'Y-m-d', bool $setValueToDateTime = true)
+    public static function getDefaultOptions(array $options): array
     {
-        $this->format = $format;
-        $this->setValueToDateTime = $setValueToDateTime;
+        return [
+            // The date format
+            'format' => 'Y-m-d',
+
+            // Should the value before set to the resolved Date object or left alone?
+            'setValueToDateTime' => true,
+
+            // Using strict will treat an empty string as a failure
+            'strict' => true,
+        ];
     }
 
     /**
@@ -44,22 +42,28 @@ class IsDate implements Validator, Validator\Description
     {
         $isValid = ($value instanceof ValueWasNotSet);
 
+        if (! $isValid && ! $this->option('strict') && $value === '') {
+            // value is not actually set
+            $value = new ValueWasNotSet();
+            $isValid = true;
+        }
+
         if (! $isValid) {
             // resolve the date
-            $date = Date::create($this->format, $value);
+            $date = Date::create($this->option('format'), $value);
 
             // are the items the same?
-            $isValid = ($date && $date->format($this->format) === $value);
+            $isValid = ($date && $date->format($this->option('format')) === $value);
 
             // update the value if the result is valid and setValue... is true
-            $value = ($isValid && $this->setValueToDateTime ? $date : $value);
+            $value = ($isValid && $this->option('setValueToDateTime') ? $date : $value);
         }
 
         return new Result(
             $isValid,
             $value,
             'isDate',
-            (! $isValid ? 'Date must be in the format: ' . $this->format : '')
+            (! $isValid ? 'Date must be in the format: ' . $this->option('format') : '')
         );
     }
 
@@ -70,7 +74,7 @@ class IsDate implements Validator, Validator\Description
     {
         // @todo Add PHP => moment.js date format conversion, probably in a resolver
         return [
-            'format' => $this->format,
+            'format' => $this->option('format'),
         ];
     }
 

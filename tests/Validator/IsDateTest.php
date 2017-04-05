@@ -25,13 +25,16 @@ class IsDateTest extends ValidatorTestCaseAbstract
         $this->assertTrue($validator->validate(new ValueWasNotSet())->isValid());
 
         // valid with different date formats
-        $this->assertTrue((new IsDate('d/m/Y'))->validate('01/01/2016')->isValid());
+        $this->assertTrue((new IsDate(['format' => 'd/m/Y']))->validate('01/01/2016')->isValid());
 
         // no leading zeros
-        $this->assertTrue((new IsDate('n/j/y'))->validate('12/31/16')->isValid());
+        $this->assertTrue((new IsDate(['format' => 'n/j/y']))->validate('12/31/16')->isValid());
+
+        // allow empty strings with strict off
+        $this->assertTrue((new IsDate(['strict' => false]))->validate('')->isValid());
 
         // invalid item
-        $this->assertFalse((new IsDate('d/m/Y'))->validate('1/1/2016')->isValid());
+        $this->assertFalse((new IsDate(['format' => 'd/m/Y']))->validate('1/1/2016')->isValid());
         $this->assertFalse($validator->validate('1999-03-1')->isValid());
         $this->assertFalse($validator->validate('1999-3-9')->isValid());
 
@@ -53,7 +56,7 @@ class IsDateTest extends ValidatorTestCaseAbstract
         );
 
         // check not resolving the object
-        $dateTime = (new IsDate('Y-m-d', false))->validate('2012-01-01')->getValue();
+        $dateTime = (new IsDate(['setValueToDateTime' => false]))->validate('2012-01-01')->getValue();
         $this->assertEquals('2012-01-01', $dateTime);
 
         // dont resolve when the value is invalid
@@ -77,6 +80,6 @@ class IsDateTest extends ValidatorTestCaseAbstract
     public function testJsonSerialize()
     {
         $this->assertEquals('{"format":"Y-m-d"}', json_encode(new IsDate()));
-        $this->assertEquals('{"format":"n\/j\/y"}', json_encode(new IsDate('n/j/y')));
+        $this->assertEquals('{"format":"n\/j\/y"}', json_encode(new IsDate(['format' => 'n/j/y'])));
     }
 }
