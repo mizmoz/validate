@@ -58,7 +58,7 @@ class ToModel implements Resolver
         $class = static::createObject($this->class);
 
         if (is_array($value)) {
-            // value is an array to we'll need to apply all of the items to the where
+            // value is an array so we'll need to apply all of the items to the where
             $value = ($this->pick ? array_intersect($this->pick, array_keys($value)) : $value);
 
             return $class->populate($value)

@@ -7,6 +7,7 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
+use Mizmoz\Validate\Resolver\ToValue;
 use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsArrayOf;
@@ -75,6 +76,31 @@ class IsArrayOfTest extends ValidatorTestCaseAbstract
         $result = $validate->validate($data);
         $this->assertTrue($result->isValid());
         $this->assertEquals($data, $result->getValue());
+    }
+
+    /**
+     * Test the items in the array are resolved
+     */
+    public function testResolveChild()
+    {
+        $validate = Validate::isArrayOf(
+            Validate::isInteger()
+                ->resolveTo(new ToValue(function ($value) {
+                    return $value + 100;
+                }))
+        );
+
+        $data = [
+            1, 3, 5
+        ];
+
+        $dataResolve = [
+            101, 103, 105
+        ];
+
+        $result = $validate->validate($data);
+        $this->assertTrue($result->isValid());
+        $this->assertEquals($dataResolve, $result->getValue());
     }
 
     /**

@@ -1,4 +1,10 @@
 
+v0.7.3
+
+- Add ability to resolve child data in IsArrayOf
+- Add IsRange for checking numbers are within a range
+- Update disposable email hosts file
+
 v0.7.0
 
 - Add IsReCaptcha to validate reCAPTCHA responses

@@ -52,13 +52,16 @@ class IsArrayOf implements Validator, Validator\Description
             $value = $result->getValue();
 
             if ($resultContainer->isValid()) {
-                foreach ($value as $v) {
+                foreach ($value as &$v) {
                     $result = Validate::resolve($this->allowed)->validate($v);
                     $resultContainer->addResult($result);
 
                     if (! $resultContainer->isValid()) {
                         break;
                     }
+
+                    // valid so update the value in case we've resolved it to something else
+                    $v = $result->getValue();
                 }
             }
         }

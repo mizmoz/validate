@@ -60,7 +60,9 @@ $result->getValue(); // DateTime 2016-01-01 00:00:00
 ### Resolving a validator to a new value
 
 ```php
-$result = Validate::isSame('me')->toValue(\User::current()->userId)->validate($userId);
+$result = Validate::isSame('me')
+    ->toValue(\User::current()->userId)
+    ->validate($userId);
 
 // get the user id
 $userId = $result->getValue();
@@ -109,6 +111,12 @@ Check if the value is a valid email address
 ```php
 (new IsEmail())
     ->validate('support@mizmoz.com'); // true
+```
+
+Don‘t allow disposable email addreses 
+
+```php
+(new IsEmail(['allowDisposable' => false]))
 ```
 
 ### IsEmailDisposable
