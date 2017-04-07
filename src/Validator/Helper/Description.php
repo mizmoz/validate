@@ -113,6 +113,10 @@ class Description
      */
     public static function getName($object) : string
     {
+        if ($object instanceof Validator\Name) {
+            return $object->getName();
+        }
+
         if ($object instanceof Validator) {
             $replace = 'Validator';
         } else if ($object instanceof Resolver) {

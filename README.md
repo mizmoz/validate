@@ -17,6 +17,10 @@ messages to the user and also a nice description of the endpoint. This will be t
 be sure to have a look in the src/Validator directory.
 - Add more validators!
 
+#### Tasks
+
+- Create description for isOneOfType
+
 # Composer installation
 
 It's probably worth pointing out the API is really new and very likely to change.

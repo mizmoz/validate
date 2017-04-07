@@ -1,4 +1,8 @@
 
+v0.8.1
+
+- Add Validator\Name interface to allow validators to define their own name for descriptions
+
 v0.8.0
 
 - Breaking Change for IsDate to accept an array of options in it‘s constructor
