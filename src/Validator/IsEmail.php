@@ -13,7 +13,7 @@ use Mizmoz\Validate\Result;
 use Mizmoz\Validate\Validator\Helper\ConstructorWithOptionsTrait;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsEmail implements Validator
+class IsEmail implements Validator, Validator\Description
 {
     use ConstructorWithOptionsTrait;
 

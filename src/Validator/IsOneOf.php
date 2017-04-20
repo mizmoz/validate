@@ -23,7 +23,7 @@ class IsOneOf implements Validator, GetAllowedPropertyValues, Validator\Descript
     private $allowed;
 
     /**
-     * IsString constructor.
+     * IsOneOf constructor.
      *
      * @param array $allowed
      */
@@ -80,9 +80,8 @@ class IsOneOf implements Validator, GetAllowedPropertyValues, Validator\Descript
             if (is_scalar($shape)) {
                 $allowed[] = $shape;
             } else {
-                $description = Description::getDescription($shape);
-                $key = key($description);
-                $allowed[$key] = current($description);
+                $description = Description::getDescriptionForShapes([$shape]);
+                $allowed[] = current($description);
             }
         }
 

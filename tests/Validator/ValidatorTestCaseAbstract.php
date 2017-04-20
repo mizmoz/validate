@@ -16,6 +16,11 @@ use Mizmoz\Validate\Tests\TestCase;
 abstract class ValidatorTestCaseAbstract extends TestCase
 {
     /**
+     * Test using the Description helper to describe the validation
+     */
+    abstract public function testDescription();
+
+    /**
      * Test the required states work
      */
     abstract public function testIsRequired();

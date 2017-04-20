@@ -52,6 +52,14 @@ class IsOneOfTest extends ValidatorTestCaseAbstract
     /**
      * @inheritDoc
      */
+    public function testDescription()
+    {
+        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function testIsRequired()
     {
         $validate = Validate::isOneOf(['on', 'off']);
@@ -74,27 +82,33 @@ class IsOneOfTest extends ValidatorTestCaseAbstract
 
         // test description
         $this->assertEquals([
-            'allowed' => [
-                'isInteger' => [
-                    'strict' => false,
-                ],
-                'isOneOf' => [
-                    'allowed' => [
-                        'on', 'off'
+            'isOneOf' => [
+                'allowed' => [
+                    [
+                        'isInteger' => [
+                            'strict' => false,
+                        ],
+                    ],
+                    [
+                        'isOneOf' => [
+                            'allowed' => [
+                                'on', 'off'
+                            ]
+                        ]
                     ]
                 ]
             ]
-        ], (new IsOneOf([
-            new IsInteger(),
-            new IsOneOf(['on', 'off']),
+        ], (Validate::isOneOf([
+            Validate::isInteger(),
+            Validate::isOneOf(['on', 'off']),
         ]))->getDescription());
 
         // nested one of... not totally sure this is how we should represent this kind of validation
         $this->assertEquals(
-            '{"allowed":{"isInteger":{"strict":false},"isOneOf":{"allowed":["on","off"]}}}',
-            json_encode(new IsOneOf([
-                new IsInteger(),
-                new IsOneOf(['on', 'off']),
+            '{"isOneOf":{"allowed":[{"isInteger":{"strict":false}},{"isOneOf":{"allowed":["on","off"]}}]}}',
+            json_encode(Validate::isOneOf([
+                Validate::isInteger(),
+                Validate::isOneOf(['on', 'off']),
             ]))
         );
     }

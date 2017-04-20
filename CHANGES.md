@@ -1,4 +1,19 @@
 
+v0.9.0
+
+- Add Validator\Name interface to Chain to allow the definition of the name. This can be useful
+when you are using the Description directly in a UI.
+- Breaking Change to remove description property when it is empty from the
+Description::getDescription
+- Breaking Change rename IsArray to IsArrayOfType
+- Create new IsArray that only validates against a list of items to be consistent with IsOneOf
+- Breaking Change to remove allowed key from IsOneOf and just return the allowed items
+- Breaking Change to remove allowed key from IsFilter and just return the allowed items
+- Fix bug in isBoolean where validating false on a required chain will be invalid
+- Fix bug in Description::getDescriptionForShapes where leaf nodes weren‘t being describe correctly
+- Fix bug in IsOneOfType not returning the validation result value
+- Update disposable email hosts file
+
 v0.8.1
 
 - Add Validator\Name interface to allow validators to define their own name for descriptions

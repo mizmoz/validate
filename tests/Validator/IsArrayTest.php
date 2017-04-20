@@ -7,10 +7,12 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\Description;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsArray;
 
-class IsArrayTest extends TestCase
+class IsArrayTest extends ValidatorTestCaseAbstract
 {
     public function testIsString()
     {
@@ -45,5 +47,37 @@ class IsArrayTest extends TestCase
         $this->assertFalse($validator->validate(new class {
             // empty
         })->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testDescription()
+    {
+        // Basic validation
+        $description = Description::getDescription(new IsArray());
+
+        $this->assertEquals([
+            'isArray' => 'isArray',
+        ], $description);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testIsRequired()
+    {
+        $this->assertTrue(Validate::isArray()->isRequired()->validate([1])->isValid());
+        $this->assertFalse(Validate::isArray()->isRequired()->validate([])->isValid());
+        $this->assertFalse(Validate::isArray()->isRequired()->validate()->isValid());
+        $this->assertFalse(Validate::isArray()->isRequired()->validate(new ValueWasNotSet())->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals('{}', json_encode(new IsArray()));
     }
 }

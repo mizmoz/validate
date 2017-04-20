@@ -56,20 +56,26 @@ class Description
                 continue;
             }
 
-            $rules[$key] = [
-                // get the description if one has been set
-                'description' => ($shape instanceof Chain ? (string)$shape : ''),
-            ];
+            $rules[$key] = [];
+
+            // get the description
+            $description = ($shape instanceof Chain ? (string)$shape : '');
+            if ($description) {
+                $rules[$key]['description'] = $description;
+            }
+
+            // get the name
+            $name = ($shape instanceof Chain ? $shape->getLabel() : '');
+            if ($name) {
+                $rules[$key]['name'] = $name;
+            }
 
             if (is_array(current($validator))) {
                 foreach ($validator as $k => $item) {
                     $rules[$key][$k] = $item;
                 }
             } else {
-                $rules[$key] = [
-                    'description' => '',
-                    'validation' => $validator,
-                ];
+                $rules[$key] = array_merge($rules[$key], $validator);
             }
         }
 

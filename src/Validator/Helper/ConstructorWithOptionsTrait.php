@@ -10,7 +10,6 @@
 
 namespace Mizmoz\Validate\Validator\Helper;
 
-
 trait ConstructorWithOptionsTrait
 {
     /**
@@ -50,5 +49,21 @@ trait ConstructorWithOptionsTrait
         }
 
         return $defaultValue;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

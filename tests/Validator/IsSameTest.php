@@ -30,6 +30,14 @@ class IsSameTest extends ValidatorTestCaseAbstract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function testDescription()
+    {
+        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+    }
+
+    /**
      * Test the is required is behaving correctly.
      */
     public function testIsRequired()

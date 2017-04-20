@@ -7,100 +7,30 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Resolver\ToValue;
 use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsArrayOf;
-use Mizmoz\Validate\Validator\IsInteger;
-use Mizmoz\Validate\Validator\IsNumeric;
-use Mizmoz\Validate\Validator\IsString;
 
 class IsArrayOfTest extends ValidatorTestCaseAbstract
 {
     public function testIsArrayOf()
     {
         // valid item
-        $this->assertTrue((new IsArrayOf(new IsString))->validate(['a', 'b', 'c'])->isValid());
-        $this->assertTrue((new IsArrayOf(new IsNumeric))->validate(['1', 2, 3.0])->isValid());
+        $this->assertTrue((new IsArrayOf(['a', 'b', 'c', 'd']))->validate(['a', 'b', 'c'])->isValid());
+        $this->assertTrue((new IsArrayOf(['1', '2', 3, 4]))->validate(['2', 3])->isValid());
 
         // invalid item
-        $this->assertFalse((new IsArrayOf(new IsString))->validate([false, []])->isValid());
-        $this->assertFalse((new IsArrayOf(new IsString))->validate(null)->isValid());
-        $this->assertFalse((new IsArrayOf(new IsString))->validate('hello')->isValid());
-    }
-
-    public function testIsArrayOfNested()
-    {
-        // slightly more complicated nested item
-        $validate = (new IsArrayOf(
-            (new IsArrayOf(
-                new IsString()
-            ))
-        ));
-
-        // valid arrays of arrays with strings in
-        $this->assertTrue($validate->validate([
-            ['a', 'b', 'c'],
-            ['e', 'f', 'g']
-        ])->isValid());
-
-        // this is fine as long as any of the children aren't required
-        $this->assertTrue($validate->validate([])->isValid());
-
-        // not valid
-        $this->assertFalse($validate->validate([
-            ['1', 2, 3.0],
-            ['e', 'f', 'g']
-        ])->isValid());
-
-        $this->assertFalse($validate->validate(null)->isValid());
-    }
-
-    public function testLotsOfNesting()
-    {
-        $validate = Validate::isArrayOf(
-            Validate::isShape([
-                'name' => Validate::isString(),
-                'match' => Validate::isOneOf(['all', 'any'])
-                    ->setDefault('all'),
-            ])
-        );
-
-        $data = [
-            [
-                'name' => 'Ian',
-                'match' => 'all',
-            ]
-        ];
-
-        $result = $validate->validate($data);
-        $this->assertTrue($result->isValid());
-        $this->assertEquals($data, $result->getValue());
+        $this->assertFalse((new IsArrayOf(['a']))->validate(['b'])->isValid());
+        $this->assertFalse((new IsArrayOf([]))->validate(null)->isValid());
+        $this->assertFalse((new IsArrayOf([]))->validate('hello')->isValid());
     }
 
     /**
-     * Test the items in the array are resolved
+     * @inheritDoc
      */
-    public function testResolveChild()
+    public function testDescription()
     {
-        $validate = Validate::isArrayOf(
-            Validate::isInteger()
-                ->resolveTo(new ToValue(function ($value) {
-                    return $value + 100;
-                }))
-        );
-
-        $data = [
-            1, 3, 5
-        ];
-
-        $dataResolve = [
-            101, 103, 105
-        ];
-
-        $result = $validate->validate($data);
-        $this->assertTrue($result->isValid());
-        $this->assertEquals($dataResolve, $result->getValue());
+        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
     }
 
     /**
@@ -108,12 +38,9 @@ class IsArrayOfTest extends ValidatorTestCaseAbstract
      */
     public function testIsRequired()
     {
-        $validate = Validate::isArrayOf(Validate::isString());
+        $validate = Validate::isArrayOf(['a', 'b']);
 
-        $this->assertTrue($validate->validate([
-            'name' => 'Ian'
-        ])->isValid());
-
+        $this->assertTrue($validate->validate([])->isValid());
         $this->assertTrue($validate->validate(new ValueWasNotSet())->isValid());
 
         // now set to required
@@ -127,7 +54,7 @@ class IsArrayOfTest extends ValidatorTestCaseAbstract
      */
     public function testJsonSerialize()
     {
-        $this->assertEquals('{"isString":{"strict":false}}', json_encode(new IsArrayOf(new IsString())));
-        $this->assertEquals('{"isInteger":{"strict":false}}', json_encode(new IsArrayOf(new IsInteger())));
+        $this->assertEquals('{"allowed":["a","b"]}', json_encode(new IsArrayOf(['a', 'b'])));
+        $this->assertEquals('{"allowed":[1,2,3,4]}', json_encode(new IsArrayOf([1, 2, 3, 4])));
     }
 }

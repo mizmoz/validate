@@ -10,8 +10,9 @@ namespace Mizmoz\Validate\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\Validator\Helper\Description;
 
-class IsOneOfType implements Validator
+class IsOneOfType implements Validator, Validator\Description
 {
     /**
      * @var Validator[]
@@ -19,13 +20,13 @@ class IsOneOfType implements Validator
     private $allowed;
 
     /**
-     * IsString constructor.
+     * IsOneOfType constructor.
      *
      * @param Validator[] $allowed
      */
-    public function __construct(array $allowed)
+    public function __construct($allowed)
     {
-        $this->allowed = $allowed;
+        $this->allowed = (is_array($allowed) ? $allowed : [$allowed]);
     }
 
     /**
@@ -35,8 +36,11 @@ class IsOneOfType implements Validator
     {
         $isValid = false;
         foreach ($this->allowed as $validator) {
-            if ($validator->validate($value)->isValid()) {
+            $result = $validator->validate($value);
+
+            if ($result->isValid()) {
                 $isValid = true;
+                $value = $result->getValue();
                 break;
             }
         }
@@ -47,5 +51,21 @@ class IsOneOfType implements Validator
             'isOneOfType',
             (! $isValid ? 'Value is not valid' : '')
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        return Description::getDescriptionForShapes($this->allowed);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

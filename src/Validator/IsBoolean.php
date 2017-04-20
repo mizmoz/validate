@@ -7,12 +7,17 @@
 
 namespace Mizmoz\Validate\Validator;
 
+use Mizmoz\Validate\Contract\GetAllowedEmptyTypes;
 use Mizmoz\Validate\Contract\GetAllowedPropertyValues;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Resolver\ToMappedValue;
 
-class IsBoolean implements Validator, GetAllowedPropertyValues
+class IsBoolean implements
+    Validator,
+    GetAllowedPropertyValues,
+    GetAllowedEmptyTypes,
+    Validator\Description
 {
     /**
      * @var array
@@ -27,6 +32,17 @@ class IsBoolean implements Validator, GetAllowedPropertyValues
     public function getAllowedPropertyValues() : array
     {
         return $this->allowed;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllowedEmptyTypes(): array
+    {
+        return [
+            false,
+            0,
+        ];
     }
 
     /**
@@ -63,5 +79,23 @@ class IsBoolean implements Validator, GetAllowedPropertyValues
         }
 
         return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'allowed' => $this->allowed,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

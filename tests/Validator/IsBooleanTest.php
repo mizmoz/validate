@@ -7,10 +7,12 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
+use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\Description;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsBoolean;
 
-class IsBooleanTest extends TestCase
+class IsBooleanTest extends ValidatorTestCaseAbstract
 {
     public function testIsBoolean()
     {
@@ -31,5 +33,42 @@ class IsBooleanTest extends TestCase
         $this->assertFalse($validator->validate(123)->isValid());
         $this->assertFalse($validator->validate(null)->isValid());
         $this->assertFalse($validator->validate('')->isValid());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function testDescription()
+    {
+        // Basic validation
+        $description = Description::getDescription(new IsBoolean());
+
+        $this->assertEquals([
+            'isBoolean' => [
+                'allowed' => [0, 1, '0', '1', true, false, 'true', 'false']
+            ],
+        ], $description);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testIsRequired()
+    {
+        $this->assertTrue(Validate::isBoolean()->isRequired()->validate(true)->isValid());
+        $this->assertTrue(Validate::isBoolean()->isRequired()->validate(false)->isValid());
+        $this->assertFalse(Validate::isBoolean()->isRequired()->validate(new ValueWasNotSet())->isValid());
+        $this->assertFalse(Validate::isBoolean()->isRequired()->validate('')->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testJsonSerialize()
+    {
+        $this->assertEquals(
+            '{"allowed":[0,1,"0","1",true,false,"true","false"]}',
+            json_encode(new IsBoolean())
+        );
     }
 }

@@ -13,7 +13,7 @@ use Mizmoz\Validate\Result;
 use Mizmoz\Validate\ResultContainer;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsArrayOf implements Validator, Validator\Description, Validator\Name
+class IsArrayOfType implements Validator, Validator\Description, Validator\Name
 {
     /**
      * @var Validator[]
@@ -26,7 +26,7 @@ class IsArrayOf implements Validator, Validator\Description, Validator\Name
     private $validator;
 
     /**
-     * IsArrayOf constructor.
+     * IsArrayOfType constructor.
      *
      * @param Validator[] $allowed
      */
@@ -35,7 +35,7 @@ class IsArrayOf implements Validator, Validator\Description, Validator\Name
         $this->allowed = $allowed;
 
         // create isOneOfType validator
-        $this->validator = new IsOneOf($this->allowed);
+        $this->validator = new IsOneOfType($this->allowed);
     }
 
     /**
@@ -80,7 +80,7 @@ class IsArrayOf implements Validator, Validator\Description, Validator\Name
      */
     public function getName(): string
     {
-        return 'isArrayOf';
+        return 'isArrayOfType';
     }
 
     /**

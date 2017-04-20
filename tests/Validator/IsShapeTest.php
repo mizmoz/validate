@@ -92,7 +92,7 @@ class IsShapeTest extends TestCase
     {
         $validate = Validate::set([
             'name' => Validate::isString(),
-            'segment' => Validate::isArrayOf(
+            'segment' => Validate::isArrayOfType(
                 Validate::isShape([
                     'name' => Validate::isString(),
                     'params' => Validate::isString(),
@@ -136,10 +136,8 @@ class IsShapeTest extends TestCase
                 'isRequired' => true,
                 'isShape' => [
                     'music' => [
-                        'description' => '',
                         'isShape' => [
                             'bands' => [
-                                'description' => '',
                                 'isString' => [
                                     'strict' => false,
                                 ]
@@ -149,7 +147,6 @@ class IsShapeTest extends TestCase
                 ]
             ],
             'status' => [
-                'description' => '',
                 'isOneOf' => [
                     'allowed' => [
                         'active',

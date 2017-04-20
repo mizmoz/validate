@@ -1,6 +1,6 @@
 <?php
 
-// Last updated: Mon, 03 Apr 2017 16:31:48 +0200
+// Last updated: Wed, 19 Apr 2017 19:00:02 +0200
 
 return [
   '11ddb50e46f348cd636152db84488014c3d88d83' => '0-mail.com',
@@ -444,6 +444,7 @@ return [
   'b6c98c384f6a72deeb53da691cd534947de456fa' => 'dispostable.com',
   '21853079f71fcab5976eaa2cd2fa6c26e54015a0' => 'divermail.com',
   '51a2c4cad788cd6f36b05347c6c45627d39a4110' => 'divismail.ru',
+  '8e9233f2294a204a380b6a5cad74fd7b094f9c74' => 'diwaq.com',
   '839c7cb5543677a71d35e65874de73f1493b9446' => 'dlemail.ru',
   '6db6809d6169a6edf46349ecf0de363406501139' => 'dnses.ro',
   'bf326b5d7acb90e0aba79a7523f0302e3cf1495d' => 'dob.jp',
@@ -1231,6 +1232,7 @@ return [
   '01d98d1d290ef168b7d7cf16ca3438a37d8ac0da' => 'migmail.net',
   'd241654d8446a23a0831dc73b251d93b038ec88f' => 'migmail.pl',
   '7861ef1c0ea9ae2866fb837a20ff0af468c8993d' => 'migumail.com',
+  '8bf0db54889cc3c604fd8b38625dba08bc2ff625' => 'mihep.com',
   'c59bda32ca3d901738f47a933ffac857daeebfe3' => 'mijnhva.nl',
   '7842c0efb2f01b6c142128c064543bb8ba6174c8' => 'ministry-of-silly-walks.de',
   'a8ac29b44ffc1689ad5b12b5cf2f3d6bae3c23b5' => 'minsmail.com',

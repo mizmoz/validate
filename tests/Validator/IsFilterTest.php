@@ -241,6 +241,14 @@ class IsFilterTest extends ValidatorTestCaseAbstract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function testDescription()
+    {
+        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+    }
+
+    /**
      * Test serialisation
      */
     public function testJsonSerialize()

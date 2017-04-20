@@ -19,6 +19,7 @@ use Mizmoz\Validate\Validator\IsShape;
  * @method static Chain isArray(bool $strict = false)
  * @method static Chain isArrayOf($allowed)
  * @method static Chain isArrayOfShape(array $shape)
+ * @method static Chain isArrayOfType($allowed)
  * @method static Chain isBoolean()
  * @method static Chain isDate(array $options = [])
  * @method static Chain isEmailDisposable()

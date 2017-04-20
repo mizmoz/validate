@@ -15,7 +15,7 @@ use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValidateIterableShapeTrait;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
-class IsArrayOfShape implements Validator, Validator\Description
+class IsArrayOfShape implements Validator, Validator\Description, Validator\Name
 {
     use ValidateIterableShapeTrait;
 
@@ -52,11 +52,11 @@ class IsArrayOfShape implements Validator, Validator\Description
      */
     public function validate($value) : ResultContract
     {
-        $resultContainer = new ResultContainer('isArrayOfShape');
+        $resultContainer = new ResultContainer($this->getName());
 
         if ($value instanceof ValueWasNotSet) {
             // no valid value was passed, but we're happy to say we've passed - let any required validator catch this
-            $result = new Result(true, $value, 'isArrayOfShape');
+            $result = new Result(true, $value, $this->getName());
         } else {
             // check the value is an array
             $result = (new IsArray())->validate($value);
@@ -67,6 +67,14 @@ class IsArrayOfShape implements Validator, Validator\Description
         $values = (is_array($value) || $value instanceof \ArrayAccess ? $value : []);
 
         return $this->validateIterableShape($this->shape, $values, $resultContainer);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
+    {
+        return 'isArrayOfShape';
     }
 
     /**

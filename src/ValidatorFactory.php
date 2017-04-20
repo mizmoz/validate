@@ -46,6 +46,7 @@ class ValidatorFactory
         'isArray' => self::VALIDATOR_NAMESPACE . 'IsArray',
         'isArrayOf' => self::VALIDATOR_NAMESPACE . 'IsArrayOf',
         'isArrayOfShape' => self::VALIDATOR_NAMESPACE . 'IsArrayOfShape',
+        'isArrayOfType' => self::VALIDATOR_NAMESPACE . 'IsArrayOfType',
         'isBoolean' => self::VALIDATOR_NAMESPACE . 'IsBoolean',
         'isDate' => self::VALIDATOR_NAMESPACE . 'IsDate',
         'isEmail' => self::VALIDATOR_NAMESPACE . 'IsEmail',

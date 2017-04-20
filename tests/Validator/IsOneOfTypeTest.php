@@ -7,11 +7,11 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
-use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\IsOneOfType;
 
-class IsOneOfTypeTest extends TestCase
+class IsOneOfTypeTest extends ValidatorTestCaseAbstract
 {
     public function testIsOneOfType()
     {
@@ -31,5 +31,49 @@ class IsOneOfTypeTest extends TestCase
         $this->assertFalse($validator->validate(false)->isValid());
         $this->assertFalse($validator->validate(null)->isValid());
         $this->assertFalse($validator->validate('')->isValid());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testDescription()
+    {
+        // Basic validation
+        $description = Description::getDescription(new IsOneOfType([
+            Validate::isInteger(),
+            Validate::isString(),
+        ]));
+
+        $this->assertEquals([
+            'isOneOfType' => [
+                [
+                    'isInteger' => [
+                        'strict' => false,
+                    ],
+                ],
+                [
+
+                    'isString' => [
+                        'strict' => false,
+                    ],
+                ]
+            ],
+        ], $description);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testIsRequired()
+    {
+        // TODO: Implement testIsRequired() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testJsonSerialize()
+    {
+        // TODO: Implement testJsonSerialize() method.
     }
 }

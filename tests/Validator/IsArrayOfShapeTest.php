@@ -208,6 +208,14 @@ class IsArrayOfShapeTest extends ValidatorTestCaseAbstract
     /**
      * @inheritDoc
      */
+    public function testDescription()
+    {
+        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function testIsRequired()
     {
         $validate = Validate::isArrayOfShape(['name' => new IsString()]);
@@ -228,11 +236,11 @@ class IsArrayOfShapeTest extends ValidatorTestCaseAbstract
      */
     public function testJsonSerialize()
     {
-        $this->assertEquals('{"name":{"description":"","isString":{"strict":false}}}', json_encode(new IsArrayOfShape([
+        $this->assertEquals('{"name":{"isString":{"strict":false}}}', json_encode(new IsArrayOfShape([
             'name' => Validate::isString()
         ])));
 
-        $this->assertEquals('{"games":{"description":"","isArrayOfShape":{"title":{"description":"","isString":{"strict":false},"toDefaultValue":"Monopoly"}}}}', json_encode(new IsArrayOfShape([
+        $this->assertEquals('{"games":{"isArrayOfShape":{"title":{"isString":{"strict":false},"toDefaultValue":"Monopoly"}}}}', json_encode(new IsArrayOfShape([
             'games' => Validate::isArrayOfShape([
                 'title' => Validate::isString()
                     ->setDefault('Monopoly')

@@ -8,6 +8,7 @@
 namespace Mizmoz\Validate\Tests\Validator;
 
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsString;
 
@@ -51,12 +52,27 @@ class IsStringTest extends ValidatorTestCaseAbstract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function testDescription()
+    {
+        // Basic validation
+        $description = Description::getDescription(new IsString());
+
+        $this->assertEquals([
+            'isString' => [
+                'strict' => false,
+            ],
+        ], $description);
+    }
+
+    /**
      * Test the is required is behaving correctly.
      */
     public function testIsRequired()
     {
-        $this->assertTrue(Validate::isString()->validate('cheese')->isValid());
-        $this->assertTrue(Validate::isString()->validate(new ValueWasNotSet())->isValid());
+        $this->assertTrue(Validate::isString()->isRequired()->validate('cheese')->isValid());
+        $this->assertFalse(Validate::isString()->isRequired()->validate(new ValueWasNotSet())->isValid());
         $this->assertFalse(Validate::isString()->isRequired()->validate('')->isValid());
     }
 

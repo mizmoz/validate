@@ -78,6 +78,14 @@ class IsRangeTest extends ValidatorTestCaseAbstract
     /**
      * @inheritDoc
      */
+    public function testDescription()
+    {
+        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function testIsRequired()
     {
         // doesn't make sense for this validator
