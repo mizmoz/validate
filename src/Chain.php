@@ -14,7 +14,7 @@ use Mizmoz\Validate\Resolver\ToDefaultValue;
 use Mizmoz\Validate\Resolver\ToModel;
 use Mizmoz\Validate\Validator\Helper\Description;
 
-class Chain implements Validator\Description, Validator
+class Chain implements Validator, Validator\Description
 {
     /**
      * @var Validator
@@ -41,6 +41,11 @@ class Chain implements Validator\Description, Validator
     /**
      * @var string
      */
+    private $label = '';
+
+    /**
+     * @var string
+     */
     private $characterEncoding;
 
     /**
@@ -62,9 +67,21 @@ class Chain implements Validator\Description, Validator
      * @param string $description
      * @return Chain
      */
-    public function setDescription(string $description) : Chain
+    public function setDescription(string $description): Chain
     {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Set the label
+     *
+     * @param string $label
+     * @return Chain
+     */
+    public function setLabel(string $label): Chain
+    {
+        $this->label = $label;
         return $this;
     }
 
@@ -74,7 +91,7 @@ class Chain implements Validator\Description, Validator
      * @param array $allowedEmptyTypes
      * @return Chain
      */
-    public function isRequired($allowedEmptyTypes = null) : Chain
+    public function isRequired($allowedEmptyTypes = null): Chain
     {
         $this->chain[] = ValidatorFactory::isRequired($this->validator, $allowedEmptyTypes);
         return $this;
@@ -87,7 +104,7 @@ class Chain implements Validator\Description, Validator
      * @param bool $strict
      * @return Chain
      */
-    public function setDefault($defaultValue, bool $strict = true) : Chain
+    public function setDefault($defaultValue, bool $strict = true): Chain
     {
         $this->chain[] = new ToDefaultValue($defaultValue, $strict);
         return $this;
@@ -99,7 +116,7 @@ class Chain implements Validator\Description, Validator
      * @param Resolver $resolver
      * @return Chain
      */
-    public function resolveTo(Resolver $resolver) : Chain
+    public function resolveTo(Resolver $resolver): Chain
     {
         $this->chain[] = $resolver;
         return $this;
@@ -112,7 +129,7 @@ class Chain implements Validator\Description, Validator
      * @param array $paramMap For example ['me' => User::current()->userId]
      * @return Chain
      */
-    public function resolveToModel(string $model, array $paramMap = []) : Chain
+    public function resolveToModel(string $model, array $paramMap = []): Chain
     {
         $this->chain[] = new ToModel($model, $paramMap);
         return $this;
@@ -125,7 +142,7 @@ class Chain implements Validator\Description, Validator
      * @param int $max
      * @return Chain
      */
-    public function numberIsRange(int $min = null, int $max = null) : Chain
+    public function numberIsRange(int $min = null, int $max = null): Chain
     {
         $this->chain[] = ValidatorFactory::numberIsRange($min, $max);
         return $this;
@@ -139,7 +156,7 @@ class Chain implements Validator\Description, Validator
      * @param null|string $encoding
      * @return Chain
      */
-    public function textIsLength(int $min = 0, int $max = 0, $encoding = null) : Chain
+    public function textIsLength(int $min = 0, int $max = 0, $encoding = null): Chain
     {
         $encoding = ($encoding ? $encoding : $this->characterEncoding);
         $this->chain[] = ValidatorFactory::textIsLength($min, $max, $encoding);
@@ -152,7 +169,7 @@ class Chain implements Validator\Description, Validator
      * @param $encoding
      * @return Chain
      */
-    public function setCharacterEncoding($encoding) : Chain
+    public function setCharacterEncoding($encoding): Chain
     {
         $this->characterEncoding = $encoding;
         return $this;
@@ -162,7 +179,7 @@ class Chain implements Validator\Description, Validator
      * @param $value
      * @return ResultContract
      */
-    public function validate($value) : ResultContract
+    public function validate($value): ResultContract
     {
         $resultContainer = new ResultContainer;
 
@@ -201,7 +218,7 @@ class Chain implements Validator\Description, Validator
      *
      * @return Chain[]
      */
-    public function getChain() : array
+    public function getChain(): array
     {
         return $this->chain;
     }
@@ -211,7 +228,7 @@ class Chain implements Validator\Description, Validator
      *
      * @return Validator
      */
-    public function getValidator() : Validator
+    public function getValidator(): Validator
     {
         return $this->validator;
     }
@@ -242,6 +259,14 @@ class Chain implements Validator\Description, Validator
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
      * @return array
      */
     public function getDescription()
@@ -260,7 +285,7 @@ class Chain implements Validator\Description, Validator
     /**
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->description;
     }
