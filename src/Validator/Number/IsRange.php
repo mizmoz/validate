@@ -10,6 +10,7 @@ namespace Mizmoz\Validate\Validator\Number;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class IsRange implements Validator, Validator\Description
 {
@@ -50,14 +51,17 @@ class IsRange implements Validator, Validator\Description
     public function validate($value) : ResultContract
     {
         $isValid = true;
+        $isSet = ! ($value instanceof ValueWasNotSet);
 
-        if (! is_null($this->min) && $this->min > $value) {
-            // too long
-            $isValid = false;
-        }
+        if ($isSet) {
+            if (!is_null($this->min) && $this->min > $value) {
+                // too long
+                $isValid = false;
+            }
 
-        if ($isValid && ! is_null($this->max) && $this->max < $value) {
-            $isValid = false;
+            if ($isValid && !is_null($this->max) && $this->max < $value) {
+                $isValid = false;
+            }
         }
 
         return new Result(

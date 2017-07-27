@@ -25,6 +25,5 @@ class Disposable extends TestCase
         $this->assertFalse((new IsEmailDisposable())->validate('support@mizmoz.com')->isValid());
         $this->assertFalse((new IsEmailDisposable())->validate('super.support@mizmoz.com')->isValid());
         $this->assertFalse((new IsEmailDisposable())->validate('super.support@mizmoz.co.uk')->isValid());
-        $this->assertFalse((new IsEmailDisposable())->validate()->isValid());
     }
 }

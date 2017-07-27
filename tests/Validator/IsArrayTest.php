@@ -69,7 +69,6 @@ class IsArrayTest extends ValidatorTestCaseAbstract
     {
         $this->assertTrue(Validate::isArray()->isRequired()->validate([1])->isValid());
         $this->assertFalse(Validate::isArray()->isRequired()->validate([])->isValid());
-        $this->assertFalse(Validate::isArray()->isRequired()->validate()->isValid());
         $this->assertFalse(Validate::isArray()->isRequired()->validate(new ValueWasNotSet())->isValid());
     }
 

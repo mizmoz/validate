@@ -1,4 +1,9 @@
 
+v.0.9.1
+
+- Fix IsRange failing when passed ValueNotSet()
+- Fix broken tests
+
 v0.9.0
 
 - Add Validator\Name interface to Chain to allow the definition of the name. This can be useful

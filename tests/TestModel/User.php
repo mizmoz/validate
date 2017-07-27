@@ -34,7 +34,7 @@ class User
      * @param mixed $userId
      * @return User
      */
-    public static function get($userId) : User
+    public static function get($userId = null) : User
     {
         $user = new self;
         $user->userId = $userId;

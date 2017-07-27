@@ -9,6 +9,7 @@ namespace Mizmoz\Validate\Tests\Validator\Text;
 
 use Mizmoz\Validate\Tests\Validator\ValidatorTestCaseAbstract;
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\Number\IsRange;
 
 class IsRangeTest extends ValidatorTestCaseAbstract
@@ -73,6 +74,11 @@ class IsRangeTest extends ValidatorTestCaseAbstract
         $this->assertTrue(Validate::isNumeric()->numberIsRange(null, 10)->validate(10)->isValid());
         $this->assertTrue(Validate::isNumeric()->numberIsRange(null, 10)->validate(-1)->isValid());
         $this->assertFalse(Validate::isNumeric()->numberIsRange(null, 10)->validate(100)->isValid());
+    }
+
+    public function testNumberIsNotSet()
+    {
+        $this->assertTrue((new IsRange(0, 100))->validate(new ValueWasNotSet())->isValid());
     }
 
     /**
