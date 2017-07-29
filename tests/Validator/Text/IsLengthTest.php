@@ -7,8 +7,10 @@
 
 namespace Mizmoz\Validate\Tests\Validator\Text;
 
+use Mizmoz\Validate\Exception\ValidationException;
 use Mizmoz\Validate\Tests\Validator\ValidatorTestCaseAbstract;
 use Mizmoz\Validate\Validate;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\Text\IsLength;
 
 class IsLengthTest extends ValidatorTestCaseAbstract
@@ -51,6 +53,11 @@ class IsLengthTest extends ValidatorTestCaseAbstract
                 ->validate('東京')
                 ->isValid()
         );
+    }
+
+    public function testValueWasNotSet()
+    {
+        $this->assertTrue((new IsLength(0, 100))->validate(new ValueWasNotSet())->isValid());
     }
 
     /**

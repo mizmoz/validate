@@ -10,6 +10,7 @@ namespace Mizmoz\Validate\Validator\Text;
 use Mizmoz\Validate\Contract\Result as ResultContract;
 use Mizmoz\Validate\Contract\Validator;
 use Mizmoz\Validate\Result;
+use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class IsLength implements Validator, Validator\Description
 {
@@ -48,15 +49,19 @@ class IsLength implements Validator, Validator\Description
     public function validate($value) : ResultContract
     {
         $isValid = true;
-        $length = mb_strlen($value, $this->encoding);
+        $isSet = ! ($value instanceof ValueWasNotSet);
 
-        if ($this->min && $this->min > $length) {
-            // too long
-            $isValid = false;
-        }
+        if ($isSet) {
+            $length = mb_strlen($value, $this->encoding);
 
-        if ($isValid && $this->max && $this->max < $length) {
-            $isValid = false;
+            if ($this->min && $this->min > $length) {
+                // too long
+                $isValid = false;
+            }
+
+            if ($isValid && $this->max && $this->max < $length) {
+                $isValid = false;
+            }
         }
 
         return new Result(

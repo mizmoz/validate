@@ -22,6 +22,7 @@ use Mizmoz\Validate\Validator\IsShape;
  * @method static Chain isArrayOfType($allowed)
  * @method static Chain isBoolean()
  * @method static Chain isDate(array $options = [])
+ * @method static Chain isDecimal(int $decimalPlaces = 2)
  * @method static Chain isEmailDisposable()
  * @method static Chain isEmail(array $options = [])
  * @method static Chain isFilter(array $tags = [])

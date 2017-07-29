@@ -9,6 +9,7 @@ namespace Mizmoz\Validate;
 
 use \Exception;
 use Mizmoz\Validate\Contract\Result as ResultContract;
+use Mizmoz\Validate\Exception\ValidationException;
 
 class ResultContainer implements ResultContract
 {
@@ -65,7 +66,7 @@ class ResultContainer implements ResultContract
      * @param string $name
      * @return ResultContainer
      */
-    public function addResult(ResultContract $result, string $name = '') : ResultContainer
+    public function addResult(ResultContract $result, string $name = ''): ResultContainer
     {
         $this->results[] = $result;
         $this->isValid = ($this->isValid ? $result->isValid() : false);
@@ -92,7 +93,7 @@ class ResultContainer implements ResultContract
         $this->value = $result->getValue();
 
         if (! $result->isValid()) {
-            $this->setException($result->getException());
+            $this->addException($name, $result);
         }
 
         return $this;
@@ -110,6 +111,31 @@ class ResultContainer implements ResultContract
             $this->addResult($result);
         }
 
+        return $this;
+    }
+
+    /**
+     * Add the exception details
+     *
+     * @param string $name
+     * @param ResultContract $result
+     * @return ResultContainer
+     */
+    public function addException(string $name, ResultContract $result): ResultContainer
+    {
+        if (! $this->exception) {
+            $this->exception = new ValidationException();
+        }
+
+        if ($name) {
+            foreach ($result->getMessages() as $message) {
+                $this->exception->addMessage($message . ' for ' . $name);
+            }
+
+            return $this;
+        }
+
+        $this->exception->addMessage($result->getException()->getMessage());
         return $this;
     }
 
@@ -140,7 +166,9 @@ class ResultContainer implements ResultContract
      */
     public function getMessages() : array
     {
-        return $this->messages;
+        return array_filter($this->messages, function ($value) {
+            return $value;
+        });
     }
 
     /**
