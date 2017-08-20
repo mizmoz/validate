@@ -129,6 +129,7 @@ class ResultContainer implements ResultContract
 
         if ($name) {
             foreach ($result->getMessages() as $message) {
+                $message = (is_array($message) ? join(', ', $message) : $message);
                 $this->exception->addMessage($message . ' for ' . $name);
             }
 

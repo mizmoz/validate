@@ -1,4 +1,8 @@
 
+v.0.10.1
+
+- Fix bug where chained failures would break due to the error message being an array
+
 v.0.10.0
 
 - Add Decimal type for handling decimal numbers correctly
