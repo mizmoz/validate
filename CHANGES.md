@@ -1,16 +1,20 @@
 
-v.0.10.1
+v0.10.2
+
+- Add missing validators IsReCaptcha and IsIterable to the Validate helper & ValidateFactory
+
+v0.10.1
 
 - Fix bug where chained failures would break due to the error message being an array
 
-v.0.10.0
+v0.10.0
 
 - Add Decimal type for handling decimal numbers correctly
 - Add IsDecimal validator
 - Breaking change to how the results are returned. When using the Chain only keys with errors are returned now.
 - Fix IsLength failing when passed ValueNotSet()
 
-v.0.9.1
+v0.9.1
 
 - Fix IsRange failing when passed ValueNotSet()
 - Fix broken tests
