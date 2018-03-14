@@ -14,6 +14,7 @@ messages to the user and also a nice description of the endpoint. This will be t
   * [Composer installation](#composer-installation)
   * [Keeping the resources up to date](#keeping-the-resources-up-to-date)
   * [Basic validation](#basic-validation)
+  * [Testing](#testing)
 - [Validators](#validators)
   * [`IsArray`](#isarray)
   * [`IsArrayOf`](#isarrayof)
@@ -123,6 +124,41 @@ ValidateFactory::setHelper('aclOwner', function () {
 
 Validate::aclAuthenticated(\User::current())->validate(\User::get(1));
 
+```
+
+# Testing
+
+Any validator or resolver can be mocked using the `ValidatorFactory::mock()` method.
+
+The mocking is pretty simple and just allows for the return Result object to be set by calling methods on the 
+mock object.
+
+```php
+# Setup the Mock of isString
+$mock = ValidatorFactory::mock('isString')
+    ->valid(false)
+    ->value('fail-value')
+    ->message('boo');
+    
+Validator::isString()->validate('hello')->isValid(); // false as we've overriden the result
+
+# Reset the container
+ValidatorFactory::unMock('isString');
+
+# ... or using the original mock
+$mock->unMock();
+
+# You can also make a mock go away after it's called by adding `once()` when setting it up
+ValidatorFactory::mock('isString')
+    // ... extra setup
+    ->once();
+```
+
+Getting the parameters passed to the Mocked object
+
+```php
+# return an array with the param names and the called method either __constructor, validate or resolve
+$mock->getCallArguments();
 ```
 
 # Validators
@@ -429,3 +465,11 @@ Check a string matches the requirements for the password.
 #### ToHash
 
 Create a hash of the given data with various techniques. MD5, SHA1, password_hash etc.
+
+### Generate API releases
+
+At Mizmoz we already use the validator chain to generate our API schema in JSON.
+
+The next step would be to create new versions or releases by comparing the new and old API endpoints. 
+This would allow us to create discrete versions for each change and also help with documentation by highlighting 
+each of the changes. We could even go further and highlight breaking changes to the API when defaults etc are changed. 

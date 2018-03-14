@@ -1,7 +1,7 @@
 <?php
 /**
- * @package Mizmoz
- * @copyright Copyright 2016 Mizmoz Limited - Released under the MIT license
+ * @package mizmoz/validate
+ * @copyright Copyright 2018 Mizmoz Limited - Released under the MIT license
  * @see https://www.mizmoz.com/labs/validate
  */
 
@@ -76,5 +76,56 @@ class ValidatorFactoryTest extends TestCase
         ValidatorFactory::setHelper('isIan', new Result(true, true));
         ValidatorFactory::setHelper('isIan', function () {
         });
+    }
+
+    /**
+     * Test the ability to mock the results of a validator
+     */
+    public function testMocking()
+    {
+        // Mock the IsReCaptcha item once and return a passed result with ok-value set
+        ValidatorFactory::mock('isReCaptcha')
+            ->valid()
+            ->value('ok-value')
+            ->message('hurray');
+
+        /** @var Result $result */
+        $result = ValidatorFactory::isReCaptcha()->validate('this-is-a-test');
+
+        $this->isTrue($result->isValid());
+        $this->assertSame('ok-value', $result->getValue());
+        $this->assertSame('isReCaptcha', $result->getName());
+        $this->assertSame(['isReCaptcha' => 'hurray'], $result->getMessages());
+
+        // Perform test again... we should get the same result
+        $result = ValidatorFactory::isReCaptcha()->validate('this-is-a-test');
+        $this->isTrue($result->isValid());
+    }
+
+    /**
+     * Mock should only exist for a single call
+     */
+    public function testMockingOnce()
+    {
+        // Mock the isString item once and return a passed result with ok-value set
+        ValidatorFactory::mock('isString')
+            ->valid(false)
+            ->value('fail-value')
+            ->message('boo')
+            ->once();
+
+        /** @var Result $result */
+        $result = ValidatorFactory::isString()->validate('this-is-a-test');
+        $this->isFalse($result->isValid());
+        $this->assertSame('fail-value', $result->getValue());
+        $this->assertSame('isString', $result->getName());
+        $this->assertSame(['isString' => 'boo'], $result->getMessages());
+
+        // this should return true now as we're calling the original validator
+        $result = ValidatorFactory::isString()->validate('this-is-a-test');
+        $this->isTrue($result->isValid());
+        $this->assertSame('this-is-a-test', $result->getValue());
+        $this->assertSame('isString', $result->getName());
+        $this->assertSame([], $result->getMessages());
     }
 }

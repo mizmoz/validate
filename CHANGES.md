@@ -1,4 +1,10 @@
 
+v0.11.0
+
+- Add ability to mock the Validator helper methods using ValidatorFactory::mock('isString')
+- Update disposable email hosts file
+- Update copyright notices to MIT
+
 v0.10.3
 
 - Fix INTL_IDNA_VARIANT_2003 deprecation warning in PHP 7.2

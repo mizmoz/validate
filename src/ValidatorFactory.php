@@ -1,7 +1,7 @@
 <?php
 /**
- * @package Mizmoz
- * @copyright Copyright 2016 Mizmoz Limited - Released under the MIT license
+ * @package mizmoz/validate
+ * @copyright Copyright 2018 Mizmoz Limited - Released under the MIT license
  * @see https://www.mizmoz.com/labs/validate
  */
 
@@ -14,6 +14,7 @@ use Mizmoz\Validate\Exception\NonExistentHelperException;
 use Mizmoz\Validate\Exception\NonUniqueHelperNameException;
 use Mizmoz\Validate\Exception\InvalidHelperTypeException;
 use Mizmoz\Validate\Validator\IsRequired;
+use Mizmoz\Validate\Helper\Mock;
 
 class ValidatorFactory
 {
@@ -230,6 +231,46 @@ class ValidatorFactory
     }
 
     /**
+     * Mock the results of a helper
+     *
+     * @param string $name
+     * @param bool $reset Should we reset a mock if we found one that already existed?
+     * @return Mock
+     */
+    public static function mock(string $name, bool $reset = true): Mock
+    {
+        // does the helper exist?
+        $helper = static::exist($name);
+
+        if ($helper instanceof Mock) {
+            // already set so reset and return the current mock
+            return $helper->reset();
+        }
+
+        // pass the helper to mock and it's current value so we can reset it once we're done.
+        self::$helper[$name] = new Mock($name, $helper);
+
+        // return the newly mocked helper
+        return self::$helper[$name];
+    }
+
+    /**
+     * Removes the mock and reset the validator to it's original value
+     *
+     * @param string $name
+     */
+    public static function unMock(string $name)
+    {
+        // does the validator exist?
+        $helper = static::exist($name);
+
+        if ($helper instanceof Mock) {
+            // reset
+            self::$helper[$name] = $helper->getMockedValidator();
+        }
+    }
+
+    /**
      * Call the helpers
      *
      * @param $name
@@ -238,13 +279,27 @@ class ValidatorFactory
      */
     public static function __callStatic($name, $arguments)
     {
+        // does the validator exist?
+        static::exist($name);
+
+        // call the helper
+        return static::resolveHelper($name, $arguments);
+    }
+
+    /**
+     * Check if the validator exists
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public static function exist(string $name)
+    {
         if (! isset(self::$helper[$name])) {
             throw new NonExistentHelperException(
                 $name . ' doesn\'t exist. If you\'re trying to use a custom helper you need to call setHelper first.'
             );
         }
 
-        // call the helper
-        return static::resolveHelper($name, $arguments);
+        return self::$helper[$name];
     }
 }

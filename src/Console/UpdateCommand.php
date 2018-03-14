@@ -1,11 +1,8 @@
 <?php
 /**
- * All rights reserved. No part of this code may be reproduced, modified,
- * amended or retransmitted in any form or by any means for any purpose without
- * prior written consent of Mizmoz Limited.
- * You must ensure that this copyright notice remains intact at all times
- *
- * @copyright Copyright (c) Mizmoz Limited 2017. All rights reserved.
+ * @package mizmoz/validate
+ * @copyright Copyright 2018 Mizmoz Limited - Released under the MIT license
+ * @see https://www.mizmoz.com/labs/validate
  */
 
 namespace Mizmoz\Validate\Console;
