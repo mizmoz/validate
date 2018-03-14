@@ -1,4 +1,8 @@
 
+v0.10.3
+
+- Fix INTL_IDNA_VARIANT_2003 deprecation warning in PHP 7.2
+
 v0.10.2
 
 - Add missing validators IsReCaptcha and IsIterable to the Validate helper & ValidateFactory

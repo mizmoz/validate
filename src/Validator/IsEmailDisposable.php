@@ -61,7 +61,7 @@ class IsEmailDisposable implements Validator, Validator\Description
     private function isDisposable($email) : bool
     {
         // check to see if the hostname appears in the disposable list
-        $email = idn_to_utf8($email);
+        $email = idn_to_utf8($email, 0, INTL_IDNA_VARIANT_UTS46);
 
         if (preg_match('/^(.+)@([^@]+)$/', $email, $matches)) {
             $parts = explode('.', strtolower($matches[2]));

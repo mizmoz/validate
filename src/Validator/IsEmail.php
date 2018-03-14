@@ -73,7 +73,7 @@ class IsEmail implements Validator, Validator\Description
             return 'This is not a valid email address';
         }
 
-        $email = idn_to_utf8($value);
+        $email = idn_to_utf8($value, 0, INTL_IDNA_VARIANT_UTS46);
 
         if (! $this->splitEmailParts($email)) {
             // couldn't parse the local@hostname
