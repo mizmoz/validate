@@ -1,4 +1,8 @@
 
+v0.11.1
+
+- Add missing description for the ToModel and ToClass resolvers
+
 v0.11.0
 
 - Add ability to mock the Validator helper methods using ValidatorFactory::mock('isString')

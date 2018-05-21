@@ -8,6 +8,7 @@
 namespace Mizmoz\Validate\Resolver;
 
 use Mizmoz\Validate\Contract\Resolver;
+use Mizmoz\Validate\Contract\Validator\Description;
 use Mizmoz\Validate\Resolver\Helper\CreateObjectTrait;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
@@ -18,7 +19,7 @@ use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
  *
  * @package Mizmoz\Validate\Resolver
  */
-class ToModel implements Resolver
+class ToModel implements Resolver, Description
 {
     use CreateObjectTrait;
 
@@ -67,5 +68,23 @@ class ToModel implements Resolver
 
         // basic model get by key
         return $class->get($value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'class' => $this->class,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

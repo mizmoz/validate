@@ -8,9 +8,10 @@
 namespace Mizmoz\Validate\Resolver;
 
 use Mizmoz\Validate\Contract\Resolver;
+use Mizmoz\Validate\Contract\Validator\Description;
 use Mizmoz\Validate\Exception\RuntimeException;
 
-class ToClass implements Resolver
+class ToClass implements Resolver, Description
 {
     /**
      * @var mixed
@@ -54,5 +55,23 @@ class ToClass implements Resolver
             case self::VALUE_IS_NAMED_PROPERTY_LIST:
                 throw new RuntimeException('Not implemented yet, sorry!');
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDescription()
+    {
+        return [
+            'class' => $this->class,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize()
+    {
+        return $this->getDescription();
     }
 }

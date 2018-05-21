@@ -11,6 +11,7 @@ use Mizmoz\Validate\Resolver\ToModel;
 use Mizmoz\Validate\Tests\Helper\HasMockeryTrait;
 use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Tests\TestModel\User;
+use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 
 class ToModelTest extends TestCase
@@ -53,5 +54,20 @@ class ToModelTest extends TestCase
         $result = $resolver->resolve($value);
         $this->assertEquals($value['userId'], $result->userId);
         $this->assertEquals($value['userStatus'], $result->userStatus);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testDescription()
+    {
+        // Basic validation
+        $description = Description::getDescription(new ToModel(User::class));
+
+        $this->assertEquals([
+            'toModel' => [
+                'class' => User::class,
+            ],
+        ], $description);
     }
 }
