@@ -1,4 +1,8 @@
 
+v0.11.2
+
+- Add ToInteger contract for resolving objects to ints in the IsInteger validator
+
 v0.11.1
 
 - Add missing description for the ToModel and ToClass resolvers

@@ -7,6 +7,7 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
+use Mizmoz\Validate\Contract\Validator\ToInteger;
 use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsInteger;
@@ -35,6 +36,25 @@ class IsIntegerTest extends ValidatorTestCaseAbstract
         $this->assertFalse($validator->validate(false)->isValid());
         $this->assertFalse($validator->validate(null)->isValid());
         $this->assertFalse($validator->validate('')->isValid());
+    }
+
+    public function testIsIntegerWithObjectContract()
+    {
+        $value = new class implements ToInteger {
+            /**
+             * @inheritDoc
+             */
+            public function toInteger(): int
+            {
+                return 1;
+            }
+        };
+
+        $validator = new IsInteger();
+        $validatorStrict = new IsInteger(true);
+
+        $this->assertTrue($validator->validate($value)->isValid());
+        $this->assertTrue($validatorStrict->validate($value)->isValid());
     }
 
     public function testGetAllowedTypes()

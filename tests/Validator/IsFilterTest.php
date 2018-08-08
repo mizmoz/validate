@@ -7,6 +7,7 @@
 
 namespace Mizmoz\Validate\Tests\Validator;
 
+use Mizmoz\Validate\Validator\Helper\Description;
 use Mizmoz\Validate\Validate;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsFilter;
@@ -75,6 +76,24 @@ class IsFilterTest extends ValidatorTestCaseAbstract
                 789
             ],
         ], $validator->validate('@123 @456 @789')->getValue());
+    }
+
+    /**
+     * Test we can use a value when filtering like #test=1
+     */
+    public function testTagWithValue()
+    {
+        return $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+
+        $validate = Validate::isFilter(['#test']);
+
+        // single value
+        $this->assertEquals([
+            'filter' => '',
+            'test' => [
+                '1',
+            ],
+        ], $validate->validate('#test=1')->getValue());
     }
 
     /**
@@ -245,7 +264,14 @@ class IsFilterTest extends ValidatorTestCaseAbstract
      */
     public function testDescription()
     {
-        $this->markTestSkipped('Need to implement test for ' . __METHOD__);
+        // Basic validation
+        $description = Description::getDescription(new IsFilter());
+
+        $this->assertEquals([
+            'isFilter' => [
+                'allowed' => [],
+            ],
+        ], $description);
     }
 
     /**

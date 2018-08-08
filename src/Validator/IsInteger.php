@@ -47,6 +47,9 @@ class IsInteger implements Validator, GetAllowedEmptyTypes, Validator\Descriptio
         $isValid = ($value instanceof ValueWasNotSet);
 
         if (! $isValid) {
+            // attempt to resolve the item to an int.
+            $value = ($value instanceof Validator\ToInteger ? $value->toInteger() : $value);
+
             $isValid = ($this->strict
                 ? is_int($value)
                 : is_numeric($value) && (bool)preg_match('/^[-]{0,1}[0-9]{1,20}$/', $value, $results)
