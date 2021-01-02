@@ -19,7 +19,7 @@ class IsEmailDisposable
      * Default list of urls to grab hosts from
      */
     const DEFAULT_URLS = [
-        'https://raw.githubusercontent.com/martenson/disposable-email-domains/master/disposable_email_blacklist.conf',
+        'https://raw.githubusercontent.com/martenson/disposable-email-domains/master/disposable_email_blocklist.conf',
         'https://gist.githubusercontent.com/ibrahimlawal/bc9b47b038a4d823e1f85cb5ee6ba597/raw',
         'https://raw.githubusercontent.com/wesbos/burner-email-providers/master/emails.txt',
     ];

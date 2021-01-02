@@ -1,4 +1,13 @@
 
+v0.11.4
+
+- Fix use of deprecated getReturnType() __toString()
+- Fix email block list fetch URL
+
+v0.11.3
+
+- Add ext-intl to composer.json required 
+
 v0.11.2
 
 - Add ToInteger contract for resolving objects to ints in the IsInteger validator

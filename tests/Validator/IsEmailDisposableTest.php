@@ -11,14 +11,14 @@ use Mizmoz\Validate\Tests\TestCase;
 use Mizmoz\Validate\Validator\Helper\ValueWasNotSet;
 use Mizmoz\Validate\Validator\IsEmailDisposable;
 
-class Disposable extends TestCase
+class IsEmailDisposableTest extends TestCase
 {
     public function testIsEmailDisposable()
     {
         // valid item
-        $this->assertTrue((new IsEmailDisposable())->validate('le-phishy@33mail.com')->isValid());
+        $this->assertTrue((new IsEmailDisposable())->validate('le-phishy@0clickemail.com')->isValid());
         $this->assertTrue((new IsEmailDisposable())->validate('bob@discardmail.com')->isValid());
-        $this->assertTrue((new IsEmailDisposable())->validate('banking-alert@usaanotifications.33mail.com')->isValid());
+        $this->assertTrue((new IsEmailDisposable())->validate('banking-alert@pakolokoemail.com.uk')->isValid());
         $this->assertTrue((new IsEmailDisposable())->validate(new ValueWasNotSet())->isValid());
 
         // invalid

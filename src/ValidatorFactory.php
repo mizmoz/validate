@@ -173,7 +173,7 @@ class ValidatorFactory
         // check the callback will return a valid item
         $reflection = new \ReflectionFunction($method);
 
-        if (! in_array((string)$reflection->getReturnType(), self::getValidHelperTypes())) {
+        if (! in_array($reflection->getReturnType()->getName(), self::getValidHelperTypes())) {
             throw new InvalidHelperTypeException(
                 '$method does not return a valid helper type. Please only use: ' .
                     implode(', ', self::getValidHelperTypes())
