@@ -79,7 +79,7 @@ class IsInteger implements Validator, GetAllowedEmptyTypes, Validator\Descriptio
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

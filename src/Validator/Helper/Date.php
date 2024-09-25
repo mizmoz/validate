@@ -15,15 +15,16 @@ class Date extends DateTime
     /**
      * @var string
      */
-    private $dateFormat;
+    private string $dateFormat;
 
     /**
      * Date constructor.
      * @param string $time
-     * @param DateTimeZone $timezone
+     * @param DateTimeZone|null $timezone
      * @param string $dateFormat
+     * @throws \DateMalformedStringException
      */
-    public function __construct($time = 'now', DateTimeZone $timezone = null, $dateFormat = 'Y-m-d')
+    final public function __construct(string $time = 'now', DateTimeZone $timezone = null, string $dateFormat = 'Y-m-d')
     {
         if (! $timezone) {
             $timezone = new DateTimeZone('UTC');
@@ -54,8 +55,9 @@ class Date extends DateTime
      * @param string $time
      * @param DateTimeZone|null $timezone
      * @return Date|null
+     * @throws \DateMalformedStringException
      */
-    public static function create($format, $time, DateTimeZone $timezone = null)
+    public static function create(string $format, string $time, DateTimeZone $timezone = null): ?Date
     {
         if (! $timezone) {
             $timezone = new DateTimeZone('UTC');

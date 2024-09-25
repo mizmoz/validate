@@ -34,8 +34,9 @@ trait ValidateIterableShapeTrait
         foreach ($shapes as $key => $shape) {
             // get the value for the key - we accept that a null value in an object might
             // not be interpreted correctly
-            $keyValue = (isset($values[$key]) || array_key_exists($key, $values)
-                ? $values[$key] : new ValueWasNotSet());
+            $keyExists = $values instanceof \ArrayAccess ? $values->offsetExists($key) : array_key_exists($key, $values);
+            $keyValue = $keyExists
+                ? $values[$key] : new ValueWasNotSet();
 
             // get the result
             $result = Validate::resolve($shape, $key)->validate($keyValue);

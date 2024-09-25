@@ -138,8 +138,8 @@ class Chain implements Validator, Validator\Description
     /**
      * Validate the number range
      *
-     * @param int $min
-     * @param int $max
+     * @param int|null $min
+     * @param int|null $max
      * @return Chain
      */
     public function numberIsRange(int $min = null, int $max = null): Chain
@@ -216,7 +216,7 @@ class Chain implements Validator, Validator\Description
     /**
      * Get the chain
      *
-     * @return Chain[]
+     * @return Validator[]
      */
     public function getChain(): array
     {
@@ -277,7 +277,7 @@ class Chain implements Validator, Validator\Description
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

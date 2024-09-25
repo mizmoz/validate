@@ -17,17 +17,17 @@ class IsFilter implements Validator, Validator\Description
     /**
      * @var array
      */
-    private $tags = [];
-
-    /**
-     * @var
-     */
-    private $defaults = [];
+    private array $tags = [];
 
     /**
      * @var array
      */
-    private $allowed = [];
+    private array $defaults = [];
+
+    /**
+     * @var array
+     */
+    private array $allowed = [];
 
     /**
      * IsFilter constructor.
@@ -99,9 +99,9 @@ class IsFilter implements Validator, Validator\Description
      * Set any default tags
      *
      * @param $value
-     * @return array|string
+     * @return array|string|ValueWasNotSet
      */
-    private function setDefaults($value)
+    private function setDefaults($value): array|string|ValueWasNotSet
     {
         foreach ($this->defaults as $defaults) {
             // get the actual value of the default item
@@ -136,7 +136,7 @@ class IsFilter implements Validator, Validator\Description
                     'filter' => $value,
                     $key => $defaultsValue,
                 ];
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 // check the default doesn't already exist
                 $value[$key] = $defaultsValue;
             }
@@ -221,7 +221,7 @@ class IsFilter implements Validator, Validator\Description
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

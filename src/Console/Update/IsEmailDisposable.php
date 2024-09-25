@@ -8,6 +8,7 @@
 namespace Mizmoz\Validate\Console\Update;
 
 use \DateTime;
+use GuzzleHttp\Exception\GuzzleException;
 use Mizmoz\Validate\Helper\WithGuzzleTrait;
 use Mizmoz\Validate\Exception\RuntimeException;
 
@@ -18,7 +19,7 @@ class IsEmailDisposable
     /**
      * Default list of urls to grab hosts from
      */
-    const DEFAULT_URLS = [
+    const array DEFAULT_URLS = [
         'https://raw.githubusercontent.com/martenson/disposable-email-domains/master/disposable_email_blocklist.conf',
         'https://gist.githubusercontent.com/ibrahimlawal/bc9b47b038a4d823e1f85cb5ee6ba597/raw',
         'https://raw.githubusercontent.com/wesbos/burner-email-providers/master/emails.txt',
@@ -27,12 +28,11 @@ class IsEmailDisposable
     /**
      * @var array
      */
-    private $urls = [];
+    private array $urls = [];
 
     /**
      * IsEmailDisposable constructor.
      *
-     * IsEmailDisposable constructor.
      * @param array $urls
      */
     public function __construct(array $urls = self::DEFAULT_URLS)
@@ -46,7 +46,7 @@ class IsEmailDisposable
      * @param $url
      * @return IsEmailDisposable
      */
-    public function add($url) : IsEmailDisposable
+    public function add($url): IsEmailDisposable
     {
         $this->urls[] = $url;
         return $this;
@@ -57,8 +57,9 @@ class IsEmailDisposable
      *
      * @param string $fileName
      * @return int
+     * @throws GuzzleException
      */
-    public function update(string $fileName) : int
+    public function update(string $fileName): int
     {
         $hosts = [];
 
@@ -93,7 +94,7 @@ class IsEmailDisposable
      * @param array $hosts
      * @return bool
      */
-    private function writeHostsToFile(string $fileName, array $hosts) : bool
+    private function writeHostsToFile(string $fileName, array $hosts): bool
     {
         if (! ($fpHosts = fopen($fileName, 'w'))) {
             throw new RuntimeException('Can‘t open file for writing: ' . $fileName);

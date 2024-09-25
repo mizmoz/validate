@@ -21,29 +21,29 @@ class ValidatorFactory
     /**
      * Validator namespace
      */
-    const VALIDATOR_NAMESPACE = __NAMESPACE__ . '\\Validator\\';
+    const string VALIDATOR_NAMESPACE = __NAMESPACE__ . '\\Validator\\';
 
     /**
      * Number validation
      */
-    const VALIDATOR_NUMBER_NAMESPACE = __NAMESPACE__ . '\\Validator\\Number\\';
+    const string VALIDATOR_NUMBER_NAMESPACE = __NAMESPACE__ . '\\Validator\\Number\\';
 
     /**
      * Text validation
      */
-    const VALIDATOR_TEXT_NAMESPACE = __NAMESPACE__ . '\\Validator\\Text\\';
+    const string VALIDATOR_TEXT_NAMESPACE = __NAMESPACE__ . '\\Validator\\Text\\';
 
     /**
      * Resolver namespace
      */
-    const RESOLVER_NAMESPACE = __NAMESPACE__ . '\\Resolver\\';
+    const string RESOLVER_NAMESPACE = __NAMESPACE__ . '\\Resolver\\';
 
     /**
      * Allow overriding the default helpers or setting new ones
      *
      * @var array
      */
-    private static $helper = [
+    private static array $helper = [
         'isArray' => self::VALIDATOR_NAMESPACE . 'IsArray',
         'isArrayOf' => self::VALIDATOR_NAMESPACE . 'IsArrayOf',
         'isArrayOfShape' => self::VALIDATOR_NAMESPACE . 'IsArrayOfShape',
@@ -208,15 +208,11 @@ class ValidatorFactory
      * Set the required flag
      *
      * @param Validator $validator
-     * @param array $allowedEmptyTypes
+     * @param array|null $allowedEmptyTypes
      * @return IsRequired
      */
-    public static function isRequired(Validator $validator, $allowedEmptyTypes = null) : IsRequired
+    public static function isRequired(Validator $validator, array $allowedEmptyTypes = null) : IsRequired
     {
-        if (! is_null($allowedEmptyTypes) && ! is_array($allowedEmptyTypes)) {
-            throw new \InvalidArgumentException('$allowedEmptyTypes must be an array or null');
-        }
-
         if (is_null($allowedEmptyTypes)) {
             if ($validator instanceof GetAllowedEmptyTypes) {
                 // get the default empty types
@@ -259,7 +255,7 @@ class ValidatorFactory
      *
      * @param string $name
      */
-    public static function unMock(string $name)
+    public static function unMock(string $name): void
     {
         // does the validator exist?
         $helper = static::exist($name);
@@ -292,7 +288,7 @@ class ValidatorFactory
      * @param string $name
      * @return mixed
      */
-    public static function exist(string $name)
+    public static function exist(string $name): mixed
     {
         if (! isset(self::$helper[$name])) {
             throw new NonExistentHelperException(

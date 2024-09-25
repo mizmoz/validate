@@ -94,7 +94,7 @@ class IsEmailDisposable implements Validator, Validator\Description
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

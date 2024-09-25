@@ -16,37 +16,37 @@ class ResultContainer implements ResultContract
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var bool
      */
-    private $isValid = true;
+    private bool $isValid = true;
 
     /**
      * @var mixed
      */
-    private $value;
+    private mixed $value;
 
     /**
      * @var array
      */
-    private $results = [];
+    private array $results = [];
 
     /**
      * @var array
      */
-    private $messages = [];
+    private array $messages = [];
 
     /**
      * @var array
      */
-    private $allowed = [];
+    private array $allowed = [];
 
     /**
-     * @var Exception
+     * @var Exception|null
      */
-    private $exception;
+    private ?Exception $exception = null;
 
     /**
      * ResultContainer constructor.

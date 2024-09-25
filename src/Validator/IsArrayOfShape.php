@@ -88,7 +88,7 @@ class IsArrayOfShape implements Validator, Validator\Description, Validator\Name
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

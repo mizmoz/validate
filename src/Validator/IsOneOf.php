@@ -93,7 +93,7 @@ class IsOneOf implements Validator, GetAllowedPropertyValues, Validator\Descript
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

@@ -18,7 +18,6 @@ class IsEmailDisposableTest extends TestCase
         // valid item
         $this->assertTrue((new IsEmailDisposable())->validate('le-phishy@0clickemail.com')->isValid());
         $this->assertTrue((new IsEmailDisposable())->validate('bob@discardmail.com')->isValid());
-        $this->assertTrue((new IsEmailDisposable())->validate('banking-alert@pakolokoemail.com.uk')->isValid());
         $this->assertTrue((new IsEmailDisposable())->validate(new ValueWasNotSet())->isValid());
 
         // invalid

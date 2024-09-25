@@ -1,3 +1,7 @@
+v0.12.0
+
+- Changes for PHP 8.0 compatibility
+- Introduce PHPStan static analysis
 
 v0.11.4
 

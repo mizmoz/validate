@@ -52,11 +52,12 @@ trait CreateObjectTrait
      * @param bool $anyArguments
      */
     public static function setCreateObjectReturnValue(
-        $returnValue,
+        mixed $returnValue,
         string $className,
         array $arguments = [],
-        $anyArguments = false
-    ) {
+        bool $anyArguments = false
+    ): void
+    {
         $key = ($anyArguments ? $className : $className . '::' . json_encode($arguments));
         self::$createObjectReturnValues[$key] = $returnValue;
     }

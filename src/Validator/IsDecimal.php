@@ -84,7 +84,7 @@ class IsDecimal implements Validator, GetAllowedEmptyTypes, Validator\Descriptio
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

@@ -48,7 +48,7 @@ class IsDate implements Validator, Validator\Description
             $isValid = true;
         }
 
-        if (! $isValid) {
+        if (! $isValid && ! is_null($value)) {
             // resolve the date
             $date = Date::create($this->option('format'), $value);
 
@@ -81,7 +81,7 @@ class IsDate implements Validator, Validator\Description
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

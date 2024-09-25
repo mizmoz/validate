@@ -86,7 +86,7 @@ class IsRange implements Validator, Validator\Description
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getDescription();
     }

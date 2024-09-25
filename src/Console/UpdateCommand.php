@@ -17,7 +17,7 @@ class UpdateCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('update')
             ->setDescription('Update the data files for the validation');
@@ -26,7 +26,7 @@ class UpdateCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('Updating the data files.');
 

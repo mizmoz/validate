@@ -65,15 +65,15 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
-        return ($this->offsetExists($offset) ? $this->object->$offset : new ValueWasNotSet());
+        return $this->offsetExists($offset) ? $this->object->$offset : new ValueWasNotSet();
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->object->$offset = $value;
     }
@@ -81,7 +81,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->object->$offset);
     }
@@ -89,7 +89,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function current()
+    public function current(): mixed
     {
         // find the offset from the index
         $offset = $this->index[$this->position];
@@ -101,7 +101,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -109,7 +109,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->index[$this->position];
     }
@@ -117,7 +117,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->index[$this->position]);
     }
@@ -125,7 +125,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -133,7 +133,7 @@ class ArrayAccess implements \ArrayAccess, \Iterator, \JsonSerializable
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
