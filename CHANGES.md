@@ -1,7 +1,9 @@
-v0.12.0
+v1.0.0
 
 - Changes for PHP 8.0 compatibility
 - Introduce PHPStan static analysis
+- Bump symfony/console to v7.1
+- Bump guzzlehttp/guzzle to v7.0
 
 v0.11.4
 

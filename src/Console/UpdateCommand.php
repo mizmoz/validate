@@ -26,7 +26,7 @@ class UpdateCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Updating the data files.');
 
@@ -35,5 +35,7 @@ class UpdateCommand extends Command
 
         // update the disposable lists
         (new IsEmailDisposable())->update($filePath);
+
+        return 0;
     }
 }

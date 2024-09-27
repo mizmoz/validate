@@ -15,8 +15,8 @@
         "php": ">=8.3",
         "ext-intl":  ">=1.1",
         "ext-json":  ">=1.2",
-        "symfony/console": "^3.2",
-        "guzzlehttp/guzzle": "^6.2"
+        "symfony/console": "^7.0",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
