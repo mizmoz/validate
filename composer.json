@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.5 || ^12.0",
         "phpstan/phpstan": "^1.12"
     },
     "autoload": {
